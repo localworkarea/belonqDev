@@ -4742,7 +4742,14 @@
         const portfolioSection = document.querySelector(".portfolio");
         const portfolioContainer = document.querySelector(".portfolio__container");
         const deckSection = document.querySelector(".deck");
+        const deckContainer = document.querySelector(".deck__container");
         const deckTop = document.querySelector(".deck__top");
+        const deckBtm = document.querySelector(".deck__btm");
+        const deckListItemSmm = document.querySelector(".list-deck__item.item-smm");
+        document.querySelector(".list-deck__item.item-3d");
+        const deckMenItem = document.querySelector(".men-deck__item");
+        const deckMenEl = document.querySelector(".men-deck__el");
+        const merchSection = document.querySelector(".merch");
         function createAnimation() {
             ScrollTrigger.getAll().forEach((trigger => trigger.kill()));
             ScrollTrigger.defaults({
@@ -4925,14 +4932,12 @@
                     stagger: index => index * .06,
                     y: "0%"
                 }).to(advisersTitleSpan, {
-                    stagger: index => index * .06,
-                    opacity: 0
+                    stagger: index => index * .06
                 }, "+=2").to(advisersSubTitleSpan, {
                     y: "0%",
                     opacity: 1,
                     stagger: index => index * .02
                 }, "-=2").to(advisersSubTitleSpan, {
-                    opacity: 0,
                     stagger: index => index * .02
                 }, "+=1");
                 gsap.to(advisersListItems, {
@@ -4947,6 +4952,60 @@
                     }
                 });
             }
+            if (deckSection) {
+                gsap.to(deckBtm, {
+                    left: 0,
+                    opacity: 1,
+                    scrollTrigger: {
+                        trigger: deckBtm,
+                        start: "top bottom",
+                        end: "top top",
+                        scrub: true
+                    }
+                });
+                gsap.to(deckListItemSmm, {
+                    top: 0,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: deckBtm,
+                        start: "top bottom",
+                        end: "top top",
+                        scrub: true
+                    }
+                });
+                gsap.to(deckMenEl, {
+                    y: "0%",
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: deckMenItem,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+                gsap.to(deckContainer, {
+                    left: "-50%",
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: merchSection,
+                        start: "top bottom",
+                        end: "top top",
+                        scrub: true,
+                        markers: true
+                    }
+                });
+            }
+            if (merchSection) gsap.to(merchSection, {
+                left: 0,
+                duration: .5,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: merchSection,
+                    start: "top bottom",
+                    end: "top top",
+                    scrub: true
+                }
+            });
             gsap.set([ navTitle, navFirstItem, partnersContainer ], {
                 clearProps: "all"
             });
@@ -5133,7 +5192,6 @@
                             ease: "none"
                         }).to(partnersContainer, {
                             x: "-100%",
-                            opacity: 0,
                             ease: "none"
                         });
                         gsap.timeline({
@@ -5168,7 +5226,7 @@
                     }
                     if (portfolioSection) {
                         gsap.set(portfolioContainer, {
-                            x: "100%"
+                            x: "50%"
                         });
                         gsap.timeline({
                             scrollTrigger: {
@@ -5199,6 +5257,16 @@
                             ease: "none"
                         });
                     }
+                    if (deckSection) gsap.to(deckTop, {
+                        left: "0%",
+                        scrollTrigger: {
+                            trigger: deckTop,
+                            start: "top bottom",
+                            end: "center center",
+                            scrub: true,
+                            invalidateOnRefresh: true
+                        }
+                    });
                 }
                 if (landscapeMax1366) ;
                 if (maxWidth488) ;
