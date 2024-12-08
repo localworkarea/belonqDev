@@ -10,7 +10,7 @@
 			opacity: 0;
 		}
 	</style>
-	<link rel="stylesheet" href="css/style.min.css?_v=20241208160626">
+	<link rel="stylesheet" href="css/style.min.css?_v=20241208225539">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,16 +36,16 @@
 						</button>
 						<nav id="modal" data-lenis-prevent class="menu__body">
 							<ul class="menu__list">
-								<li class="menu__item"><a href="#" class="menu__link" aria-label="link to section">
+								<li class="menu__item"><a href="#" data-goto=".services" data-goto-top="80" class="menu__link" aria-label="link to section">
 										<span class="split-both">services</span>
 									</a></li>
-								<li class="menu__item"><a href="#" class="menu__link" aria-label="link to section">
+								<li class="menu__item"><a href="#" data-goto=".partners" data-goto-top="80" class="menu__link" aria-label="link to section">
 										<span class="split-both">ParTners & collabs</span>
 									</a></li>
-								<li class="menu__item"><a href="#" class="menu__link" aria-label="link to section">
+								<li class="menu__item"><a href="#" data-goto=".portfolio" data-goto-top="80" class="menu__link" aria-label="link to section">
 										<span class="split-both">Portfolio</span>
 									</a></li>
-								<li class="menu__item"><a href="#" class="menu__link" aria-label="link to section">
+								<li class="menu__item"><a href="#" data-goto=".merch" data-goto-top="80" class="menu__link" aria-label="link to section">
 										<span class="split-both">merch</span>
 									</a></li>
 							</ul>
@@ -826,160 +826,70 @@
 				</div>
 			</section>
 			<section class="footer">
-				<div class="payment">
-					<div class="payment__container">
-						<div class="payment__body">
-							<h2 class="payment__title title-main">
-								Flexible<br> <span>payment terms</span>
-							</h2>
-							<div class="payment__block">
-								<div class="payment__txt">
-									<p>
-										we prioritise clients needs to ensure convenient partnership
-									</p>
+				<div class="footer__body">
+					<div data-watch data-watch-threshold="0.5" class="footer__item payment">
+						<div class="payment__container">
+							<div class="payment__body">
+								<h2 data-watch class="payment__title title-main split-chars">
+									Flexible<br> <span>payment terms</span>
+								</h2>
+								<div class="payment__block">
+									<div class="payment__txt">
+										<p>
+											we prioritise clients needs to ensure convenient partnership
+										</p>
+									</div>
+									<ul class="payment__list">
+										<li class="payment__item">
+											Per request issue invoices for payment in FIAT or Crypto
+										</li>
+										<li class="payment__item">
+											Can accept future projects tokens
+										</li>
+										<li class="payment__item">
+											Deferred payment options can be discussed
+										</li>
+									</ul>
+									<img class="payment__line" src="img/lines-yellow.svg" width="540" height="200" alt="Image">
 								</div>
-								<ul class="payment__list">
-									<li class="payment__item">
-										Per request issue invoices for payment in FIAT or Crypto
-									</li>
-									<li class="payment__item">
-										Can accept future projects tokens
-									</li>
-									<li class="payment__item">
-										Deferred payment options can be discussed
-									</li>
-								</ul>
-								<img class="payment__line" src="img/lines-yellow.svg" width="540" height="200" alt="Image">
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="contacts">
-					<div class="contacts__container">
-						<div class="contacts__body">
-							<div class="contacts__get get-contacts">
-								<div class="get-contacts__block">
-									<div class="get-contacts__cubes">
-										<div class="cubes-deck">
-											<div class="cubes-deck__item">
-												<img class="ibg ibg--contain" src="img/deck/cube-b.svg" width="38" height="38" alt="cube">
+					<div class="footer__item contacts">
+						<div class="contacts__container">
+							<div class="contacts__body">
+								<div class="contacts__get get-contacts">
+									<div class="get-contacts__block">
+										<div class="get-contacts__cubes">
+											<div class="cubes-deck">
+												<div class="cubes-deck__item">
+													<img class="ibg ibg--contain" src="img/deck/cube-b.svg" width="38" height="38" alt="cube">
+												</div>
+												<div class="cubes-deck__item">
+													<img class="ibg ibg--contain" src="img/deck/cube-q.svg" width="38" height="38" alt="cube">
+												</div>
 											</div>
-											<div class="cubes-deck__item">
-												<img class="ibg ibg--contain" src="img/deck/cube-q.svg" width="38" height="38" alt="cube">
-											</div>
+										</div>
+										<p class="get-contacts__title">
+											GET<br> IN<br> TOU<br>CH
+										</p>
+										<div class="get-contacts__txts">
+											<p class="get-contacts__founder">
+												AndrEW
+											</p>
+											<p class="get-contacts__position">
+												co-founder<br> / Sales<br> Alchemist
+											</p>
 										</div>
 									</div>
-									<p class="get-contacts__title">
-										GET<br> IN<br> TOU<br>CH
-									</p>
-									<div class="get-contacts__txts">
-										<p class="get-contacts__founder">
-											AndrEW
-										</p>
-										<p class="get-contacts__position">
-											co-founder<br> / Sales<br> Alchemist
-										</p>
+									<div class="get-contacts__img">
+										<picture>
+											<source srcset="img/contacts/andrew.webp" media="(min-width: 30.061em)" type="image/webp">
+											<source srcset="img/contacts/andrew-mb.webp" type="image/webp">
+											<img class="ibg ibg--contain" src="img/contacts/andrew.webp" width="214" height="299" alt="image">
+										</picture>
 									</div>
 								</div>
-								<div class="get-contacts__img">
-									<picture>
-										<source srcset="img/contacts/andrew.webp" media="(min-width: 30.061em)" type="image/webp">
-										<source srcset="img/contacts/andrew-mb.webp" type="image/webp">
-										<img class="ibg ibg--contain" src="img/contacts/andrew.webp" width="214" height="299" alt="image">
-									</picture>
-								</div>
-							</div>
-							<div class="contacts__footer footer-list">
-								<ul class="footer-list__items">
-									<li class="footer-list__item">
-										<p class="footer-list__title">
-											officials
-										</p>
-										<a href="#" class="footer-list__book" aria-label="link">
-											book<br> a call
-										</a>
-									</li>
-									<li class="footer-list__item">
-										<div class="footer-list__head">
-											<p class="footer-list__title">
-												follow
-											</p>
-											<svg class="footer-list__eye" width="188" height="116" viewBox="0 0 188 116" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<g clip-path="url(#clip0_1_6838)">
-													<path d="M179.195 58.3843L179.724 57.7466L179.196 57.1084C173.872 50.6754 162.571 38.0464 147.606 27.018C132.654 15.9994 113.938 6.50023 93.8059 6.50023C73.724 6.50023 55.0135 16.0034 40.0521 27.0251C25.0772 38.0568 13.7509 50.6891 8.41639 57.122L7.88759 57.7597L8.41575 58.3979C13.7394 64.8309 25.0406 77.4599 40.006 88.4883C54.9581 99.5069 73.6739 109.006 93.8059 109.006C113.888 109.006 132.598 99.5029 147.56 88.4812C162.535 77.4495 173.861 64.8172 179.195 58.3843ZM1.25052 57.7531C1.26032 57.7403 1.27027 57.7272 1.28039 57.7139C1.59652 57.2986 2.06856 56.6873 2.68866 55.908C3.92891 54.3492 5.76096 52.1188 8.12195 49.4407C12.8451 44.0831 19.6789 36.9407 28.1204 29.8007C45.033 15.4957 68.2562 1.32124 93.8059 1.32124C119.356 1.32124 142.579 15.4957 159.491 29.8007C167.933 36.9407 174.767 44.0831 179.49 49.4407C181.851 52.1189 183.683 54.3492 184.923 55.908C185.543 56.6873 186.015 57.2986 186.331 57.7139C186.341 57.7272 186.351 57.7403 186.361 57.7532C186.351 57.766 186.341 57.7791 186.331 57.7924C186.015 58.2077 185.543 58.819 184.923 59.5983C183.683 61.1571 181.851 63.3875 179.49 66.0656C174.767 71.4232 167.933 78.5656 159.491 85.7056C142.579 100.011 119.356 114.185 93.8059 114.185C68.2561 114.185 45.033 100.011 28.1204 85.7056C19.6789 78.5656 12.8451 71.4232 8.12195 66.0656C5.76096 63.3874 3.92891 61.157 2.68866 59.5983C2.06856 58.819 1.59652 58.2077 1.28039 57.7924C1.27027 57.7791 1.26032 57.766 1.25052 57.7531Z" fill="white" stroke="black" stroke-width="2" />
-													<path d="M93.8057 93.6479C113.729 93.6479 129.885 77.5814 129.885 57.753C129.885 37.9246 113.729 21.8581 93.8058 21.8581C73.8757 21.8581 57.7267 37.9246 57.7267 57.753C57.7267 77.5814 73.8757 93.6479 93.8057 93.6479ZM82.982 57.753C88.9567 57.753 93.8058 62.5773 93.8058 68.5215C93.8057 74.4657 88.9567 79.29 82.982 79.29C77.0074 79.29 72.1583 74.4657 72.1583 68.5215C72.1583 62.5773 77.0074 57.753 82.982 57.753Z" fill="#FDDA04" />
-												</g>
-												<defs>
-													<clipPath id="clip0_1_6838">
-														<rect width="187.611" height="114.864" fill="white" transform="translate(187.611 115.185) rotate(-180)" />
-													</clipPath>
-												</defs>
-											</svg>
-										</div>
-										<ul class="footer-list__social social-footer">
-											<li class="social-footer__item">
-												<a href="#" class="social-footer__link" aria-label="link to social">
-													x
-												</a>
-											</li>
-											<li class="social-footer__item">
-												<a href="#" class="social-footer__link" aria-label="link to social">
-													linkidin
-												</a>
-											</li>
-											<li class="social-footer__item">
-												<a href="#" class="social-footer__link" aria-label="link to social">
-													telegram
-												</a>
-											</li>
-											<li class="social-footer__item">
-												<a href="#" class="social-footer__link" aria-label="link to social">
-													facebook
-												</a>
-											</li>
-										</ul>
-									</li>
-									<li class="footer-list__item">
-										<p class="footer-list__title">
-											contacts
-										</p>
-										<address class="footer-list__address">
-											<ul class="address-footer">
-												<li class="address-footer__item">
-													<a href="tel:+393445146586" class="address-footer__phone" aria-label="phone number">+39 344 514 6586</a>
-												</li>
-												<li class="address-footer__item">
-													<p class="address-footer__city">Italy | GERMANY | USA </p>
-												</li>
-												<li class="address-footer__item">
-													<a href="mailto:info@belonqdesign.com" class="address-footer__mail" aria-label="mail">info@belonqdesign.com</a>
-												</li>
-											</ul>
-										</address>
-										<img loading="lazy" class="footer-list__code" src="img/contacts/code.webp" width="99" height="38" alt="Image">
-									</li>
-									<li class="footer-list__item">
-										<p class="footer-list__bla">
-											bla<br>bla
-										</p>
-										<div class="footer-list__rights">
-											<p>
-												© 2024 Belohq Design. All rights reserved
-											</p>
-											<ul class="footer-list__links">
-												<a href="#" class="footer-list__link" aria-label="link to page">
-													Terms of Use
-												</a>
-												<a href="#" class="footer-list__link" aria-label="link to page">
-													Cookie Policy
-												</a>
-												<a href="#" class="footer-list__link" aria-label="link to page">
-													Privacy Policy
-												</a>
-											</ul>
-										</div>
-									</li>
-								</ul>
 							</div>
 						</div>
 					</div>
@@ -987,6 +897,100 @@
 			</section>
 		</main>
 	</div>
+	<footer class="footer-list">
+		<div class="footer-list__container">
+			<ul data-watch data-watch-threshold="0.1" class="footer-list__items">
+				<li class="footer-list__item">
+					<p class="footer-list__title">
+						officials
+					</p>
+					<a href="#" class="footer-list__book" aria-label="link">
+						book<br> a call
+					</a>
+				</li>
+				<li class="footer-list__item">
+					<div class="footer-list__head">
+						<p class="footer-list__title">
+							follow
+						</p>
+						<svg class="footer-list__eye" width="188" height="116" viewBox="0 0 188 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_1_6838)">
+								<path d="M179.195 58.3843L179.724 57.7466L179.196 57.1084C173.872 50.6754 162.571 38.0464 147.606 27.018C132.654 15.9994 113.938 6.50023 93.8059 6.50023C73.724 6.50023 55.0135 16.0034 40.0521 27.0251C25.0772 38.0568 13.7509 50.6891 8.41639 57.122L7.88759 57.7597L8.41575 58.3979C13.7394 64.8309 25.0406 77.4599 40.006 88.4883C54.9581 99.5069 73.6739 109.006 93.8059 109.006C113.888 109.006 132.598 99.5029 147.56 88.4812C162.535 77.4495 173.861 64.8172 179.195 58.3843ZM1.25052 57.7531C1.26032 57.7403 1.27027 57.7272 1.28039 57.7139C1.59652 57.2986 2.06856 56.6873 2.68866 55.908C3.92891 54.3492 5.76096 52.1188 8.12195 49.4407C12.8451 44.0831 19.6789 36.9407 28.1204 29.8007C45.033 15.4957 68.2562 1.32124 93.8059 1.32124C119.356 1.32124 142.579 15.4957 159.491 29.8007C167.933 36.9407 174.767 44.0831 179.49 49.4407C181.851 52.1189 183.683 54.3492 184.923 55.908C185.543 56.6873 186.015 57.2986 186.331 57.7139C186.341 57.7272 186.351 57.7403 186.361 57.7532C186.351 57.766 186.341 57.7791 186.331 57.7924C186.015 58.2077 185.543 58.819 184.923 59.5983C183.683 61.1571 181.851 63.3875 179.49 66.0656C174.767 71.4232 167.933 78.5656 159.491 85.7056C142.579 100.011 119.356 114.185 93.8059 114.185C68.2561 114.185 45.033 100.011 28.1204 85.7056C19.6789 78.5656 12.8451 71.4232 8.12195 66.0656C5.76096 63.3874 3.92891 61.157 2.68866 59.5983C2.06856 58.819 1.59652 58.2077 1.28039 57.7924C1.27027 57.7791 1.26032 57.766 1.25052 57.7531Z" fill="white" stroke="black" stroke-width="2" />
+								<path d="M93.8057 93.6479C113.729 93.6479 129.885 77.5814 129.885 57.753C129.885 37.9246 113.729 21.8581 93.8058 21.8581C73.8757 21.8581 57.7267 37.9246 57.7267 57.753C57.7267 77.5814 73.8757 93.6479 93.8057 93.6479ZM82.982 57.753C88.9567 57.753 93.8058 62.5773 93.8058 68.5215C93.8057 74.4657 88.9567 79.29 82.982 79.29C77.0074 79.29 72.1583 74.4657 72.1583 68.5215C72.1583 62.5773 77.0074 57.753 82.982 57.753Z" fill="#FDDA04" />
+							</g>
+							<defs>
+								<clipPath id="clip0_1_6838">
+									<rect width="187.611" height="114.864" fill="white" transform="translate(187.611 115.185) rotate(-180)" />
+								</clipPath>
+							</defs>
+						</svg>
+					</div>
+					<ul class="footer-list__social social-footer">
+						<li class="social-footer__item">
+							<a href="#" class="social-footer__link" aria-label="link to social">
+								x
+							</a>
+						</li>
+						<li class="social-footer__item">
+							<a href="#" class="social-footer__link" aria-label="link to social">
+								linkidin
+							</a>
+						</li>
+						<li class="social-footer__item">
+							<a href="#" class="social-footer__link" aria-label="link to social">
+								telegram
+							</a>
+						</li>
+						<li class="social-footer__item">
+							<a href="#" class="social-footer__link" aria-label="link to social">
+								facebook
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li class="footer-list__item">
+					<p class="footer-list__title">
+						contacts
+					</p>
+					<address class="footer-list__address">
+						<ul class="address-footer">
+							<li class="address-footer__item">
+								<a href="tel:+393445146586" class="address-footer__phone" aria-label="phone number">+39 344 514 6586</a>
+							</li>
+							<li class="address-footer__item">
+								<p class="address-footer__city">Italy | GERMANY | USA </p>
+							</li>
+							<li class="address-footer__item">
+								<a href="mailto:info@belonqdesign.com" class="address-footer__mail" aria-label="mail">info@belonqdesign.com</a>
+							</li>
+						</ul>
+					</address>
+					<img loading="lazy" class="footer-list__code" src="img/contacts/code.webp" width="99" height="38" alt="Image">
+				</li>
+				<li class="footer-list__item">
+					<p class="footer-list__bla">
+						bla<br>bla
+					</p>
+					<div class="footer-list__rights">
+						<p>
+							© 2024 Belohq Design. All rights reserved
+						</p>
+						<ul class="footer-list__links">
+							<a href="#" class="footer-list__link" aria-label="link to page">
+								Terms of Use
+							</a>
+							<a href="#" class="footer-list__link" aria-label="link to page">
+								Cookie Policy
+							</a>
+							<a href="#" class="footer-list__link" aria-label="link to page">
+								Privacy Policy
+							</a>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</footer>
 	<div data-lenis-prevent class="modal-video">
 		<div class="modal-video__wrapper">
 			<div class="modal-video__content">
@@ -1000,18 +1004,17 @@
 			</div>
 		</div>
 	</div>
+
 	<!-- <canvas class="elements-3d"></canvas> -->
 	<!-- <button class="scroll-btn" type="button" aria-label="scroll-btn">
 			<svg width="248" height="252" viewBox="0 0 248 252" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path fill-rule="evenodd" clip-rule="evenodd" d="M124.203 249.492L223.225 150.47L224.669 102.47L26.3997 103.871L26.4988 148.72L162.661 147.759L92.5658 217.854L124.203 249.492ZM204.81 83.7837L123.617 2.59082L91.8255 34.3821L139.203 81.7598L204.81 83.7837Z" fill="white" stroke="#FEED01" stroke-width="3"/>
 			</svg>
 		</button> -->
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js?_v=20241208160626"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js?_v=20241208160626"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js?_v=20241208160626"></script>
-	<script src="js/app.min.js?_v=20241208160626"></script>
-	<!-- <spline-viewer loading-anim-type="spinner-small-dark" url="https://prod.spline.design/69-SW55vo2EqHoHe/scene.splinecode"></spline-viewer> -->
-	<!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.46/build/spline-viewer.js?_v=20241208160626"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js?_v=20241208225539"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js?_v=20241208225539"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js?_v=20241208225539"></script>
+	<script src="js/app.min.js?_v=20241208225539"></script>
 </body>
 
 </html>

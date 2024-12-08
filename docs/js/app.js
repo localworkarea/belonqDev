@@ -8,6 +8,9 @@
             }), 0);
         }));
     }
+    function getHash() {
+        if (location.hash) return location.hash.replace("#", "");
+    }
     let bodyLockStatus = true;
     let bodyLockToggle = (delay = 500) => {
         if (document.documentElement.classList.contains("lock")) bodyUnlock(delay); else bodyLock(delay);
@@ -57,6 +60,15 @@
             }
         }));
     }
+    function menuClose() {
+        bodyUnlock();
+        document.documentElement.classList.remove("menu-open");
+    }
+    function functions_FLS(message) {
+        setTimeout((() => {
+            if (window.FLS) console.log(message);
+        }), 0);
+    }
     function getDigFormat(item, sepp = " ") {
         return item.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1${sepp}`);
     }
@@ -65,6 +77,44 @@
             return self.indexOf(item) === index;
         }));
     }
+    let gotoblock_gotoBlock = (targetBlock, noHeader = false, speed = 500, offsetTop = 0) => {
+        const targetBlockElement = document.querySelector(targetBlock);
+        if (targetBlockElement) {
+            let headerItem = "";
+            let headerItemHeight = 0;
+            if (noHeader) {
+                headerItem = "header.header";
+                const headerElement = document.querySelector(headerItem);
+                if (!headerElement.classList.contains("_header-scroll")) {
+                    headerElement.style.cssText = `transition-duration: 0s;`;
+                    headerElement.classList.add("_header-scroll");
+                    headerItemHeight = headerElement.offsetHeight;
+                    headerElement.classList.remove("_header-scroll");
+                    setTimeout((() => {
+                        headerElement.style.cssText = ``;
+                    }), 0);
+                } else headerItemHeight = headerElement.offsetHeight;
+            }
+            let options = {
+                speedAsDuration: true,
+                speed,
+                header: headerItem,
+                offset: offsetTop,
+                easing: "easeOutQuad"
+            };
+            document.documentElement.classList.contains("menu-open") ? menuClose() : null;
+            if (typeof SmoothScroll !== "undefined") (new SmoothScroll).animateScroll(targetBlockElement, "", options); else {
+                let targetBlockElementPosition = targetBlockElement.getBoundingClientRect().top + scrollY;
+                targetBlockElementPosition = headerItemHeight ? targetBlockElementPosition - headerItemHeight : targetBlockElementPosition;
+                targetBlockElementPosition = offsetTop ? targetBlockElementPosition - offsetTop : targetBlockElementPosition;
+                window.scrollTo({
+                    top: targetBlockElementPosition,
+                    behavior: "smooth"
+                });
+            }
+            functions_FLS(`[gotoBlock]: Юхуу...їдемо до ${targetBlock}`);
+        } else functions_FLS(`[gotoBlock]: Йой... Такого блоку немає на сторінці: ${targetBlock}`);
+    };
     class ScrollWatcher {
         constructor(props) {
             let defaultConfig = {
@@ -155,6 +205,51 @@
     }
     modules_flsModules.watcher = new ScrollWatcher({});
     let addWindowScrollEvent = false;
+    function pageNavigation() {
+        document.addEventListener("click", pageNavigationAction);
+        document.addEventListener("watcherCallback", pageNavigationAction);
+        function pageNavigationAction(e) {
+            if (e.type === "click") {
+                const targetElement = e.target;
+                if (targetElement.closest("[data-goto]")) {
+                    const gotoLink = targetElement.closest("[data-goto]");
+                    const gotoLinkSelector = gotoLink.dataset.goto ? gotoLink.dataset.goto : "";
+                    const noHeader = gotoLink.hasAttribute("data-goto-header") ? true : false;
+                    const gotoSpeed = gotoLink.dataset.gotoSpeed ? gotoLink.dataset.gotoSpeed : 500;
+                    const offsetTop = gotoLink.dataset.gotoTop ? parseInt(gotoLink.dataset.gotoTop) : 0;
+                    if (modules_flsModules.fullpage) {
+                        const fullpageSection = document.querySelector(`${gotoLinkSelector}`).closest("[data-fp-section]");
+                        const fullpageSectionId = fullpageSection ? +fullpageSection.dataset.fpId : null;
+                        if (fullpageSectionId !== null) {
+                            modules_flsModules.fullpage.switchingSection(fullpageSectionId);
+                            document.documentElement.classList.contains("menu-open") ? menuClose() : null;
+                        }
+                    } else gotoblock_gotoBlock(gotoLinkSelector, noHeader, gotoSpeed, offsetTop);
+                    e.preventDefault();
+                }
+            } else if (e.type === "watcherCallback" && e.detail) {
+                const entry = e.detail.entry;
+                const targetElement = entry.target;
+                if (targetElement.dataset.watch === "navigator") {
+                    document.querySelector(`[data-goto]._navigator-active`);
+                    let navigatorCurrentItem;
+                    if (targetElement.id && document.querySelector(`[data-goto="#${targetElement.id}"]`)) navigatorCurrentItem = document.querySelector(`[data-goto="#${targetElement.id}"]`); else if (targetElement.classList.length) for (let index = 0; index < targetElement.classList.length; index++) {
+                        const element = targetElement.classList[index];
+                        if (document.querySelector(`[data-goto=".${element}"]`)) {
+                            navigatorCurrentItem = document.querySelector(`[data-goto=".${element}"]`);
+                            break;
+                        }
+                    }
+                    if (entry.isIntersecting) navigatorCurrentItem ? navigatorCurrentItem.classList.add("_navigator-active") : null; else navigatorCurrentItem ? navigatorCurrentItem.classList.remove("_navigator-active") : null;
+                }
+            }
+        }
+        if (getHash()) {
+            let goToHash;
+            if (document.querySelector(`#${getHash()}`)) goToHash = `#${getHash()}`; else if (document.querySelector(`.${getHash()}`)) goToHash = `.${getHash()}`;
+            goToHash ? gotoblock_gotoBlock(goToHash, true, 500, 20) : null;
+        }
+    }
     function digitsCounter() {
         function digitsCountersInit(digitsCountersItems) {
             let digitsCounters = digitsCountersItems ? digitsCountersItems : document.querySelectorAll("[data-digits-counter]");
@@ -4706,6 +4801,9 @@
         window.addEventListener("resize", (() => {
             const currentWidth = window.innerWidth;
             if (currentWidth !== lastWidth) {
+                setTimeout((() => {
+                    location.reload();
+                }), 300);
                 updateHeroHeight();
                 initSplitType();
                 createAnimation();
@@ -4751,6 +4849,18 @@
         const deckMenEl = document.querySelector(".men-deck__el");
         const merchSection = document.querySelector(".merch");
         const merchContainer = document.querySelector(".merch__container");
+        const footer = document.querySelector(".footer");
+        const footerBody = document.querySelector(".footer__body");
+        const payment = document.querySelector(".payment");
+        const paymentContainer = document.querySelector(".payment__container");
+        const paymentItems = document.querySelectorAll(".payment__item");
+        const paymentLine = document.querySelectorAll(".payment__line");
+        const contacts = document.querySelector(".contacts");
+        const contactsContainer = document.querySelector(".contacts__container");
+        const getContactsImg = document.querySelector(".get-contacts__img");
+        const getContactsCubs = document.querySelector(".get-contacts__cubes");
+        const getContactsTxts = document.querySelector(".get-contacts__txts");
+        const footerList = document.querySelector(".footer-list");
         function createAnimation() {
             ScrollTrigger.getAll().forEach((trigger => trigger.kill()));
             ScrollTrigger.defaults({
@@ -5178,6 +5288,108 @@
                             duration: 1
                         } ]
                     });
+                    if (footer) {
+                        gsap.to(payment, {
+                            left: "0%",
+                            duration: .5,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: payment,
+                                start: "top bottom",
+                                end: "top 10%",
+                                scrub: true
+                            }
+                        });
+                        gsap.to(paymentContainer, {
+                            y: "100%",
+                            duration: .5,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: payment,
+                                start: "120% bottom",
+                                end: "+=2000",
+                                scrub: true
+                            }
+                        });
+                        gsap.to(paymentItems, {
+                            top: 0,
+                            stagger: .01,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: payment,
+                                start: "top bottom",
+                                end: "10% top",
+                                scrub: true
+                            }
+                        });
+                        gsap.to(paymentLine, {
+                            y: 0,
+                            opacity: 1,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: payment,
+                                start: "top bottom",
+                                end: "10% top",
+                                scrub: true
+                            }
+                        });
+                        gsap.to(footerBody, {
+                            x: () => -(footerBody.scrollWidth - footerBody.offsetWidth),
+                            ease: "none",
+                            scrollTrigger: {
+                                id: "footerTrigger",
+                                trigger: footer,
+                                start: "top 10%",
+                                end: () => `+=${(footerBody.scrollWidth - footerBody.offsetWidth) / 1}`,
+                                scrub: true,
+                                pin: true,
+                                anticipatePin: 1,
+                                invalidateOnRefresh: true
+                            }
+                        });
+                        gsap.to(contactsContainer, {
+                            transform: "translate(0%,0%)",
+                            duration: .5,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: contacts,
+                                start: "center bottom",
+                                end: "270% bottom",
+                                scrub: true
+                            }
+                        });
+                        gsap.timeline({
+                            scrollTrigger: {
+                                trigger: contacts,
+                                start: "bottom bottom",
+                                end: "350% bottom",
+                                scrub: true
+                            }
+                        }).to(getContactsTxts, {
+                            transform: "translateY(0%)",
+                            duration: .5,
+                            ease: "none"
+                        }).to(getContactsCubs, {
+                            transform: "translateY(0%)",
+                            duration: .5,
+                            ease: "none"
+                        }, "<").to(getContactsImg, {
+                            transform: "translateY(0%)",
+                            duration: .5,
+                            ease: "none"
+                        }, "<");
+                        gsap.to(footerBody, {
+                            left: "-50%",
+                            duration: .5,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: footerList,
+                                start: () => ScrollTrigger.getById("footerTrigger").end,
+                                end: "+=1000",
+                                scrub: true
+                            }
+                        });
+                    }
                 }
                 if (portrait) {
                     if (itemFirstTxts) gsap.to(itemFirstTxts, {
@@ -5290,5 +5502,6 @@
     window["FLS"] = false;
     addLoadedClass();
     menuInit();
+    pageNavigation();
     digitsCounter();
 })();
