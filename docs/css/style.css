@@ -1284,9 +1284,22 @@ body {
   position: relative;
   left: 50%
 }
+.merch__container {
+  position: relative
+}
 .merch__title {
   position: relative;
   color: #fdda04
+}
+.merch__title.split-chars .char {
+  transition: .65s ease;
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%)
+}
+.merch__title._watcher-view .char {
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  transition-delay: calc(.1s + var(--index)*.03s)
 }
 .merch__title::before {
   content: "";

@@ -4750,6 +4750,7 @@
         const deckMenItem = document.querySelector(".men-deck__item");
         const deckMenEl = document.querySelector(".men-deck__el");
         const merchSection = document.querySelector(".merch");
+        const merchContainer = document.querySelector(".merch__container");
         function createAnimation() {
             ScrollTrigger.getAll().forEach((trigger => trigger.kill()));
             ScrollTrigger.defaults({
@@ -4990,22 +4991,34 @@
                         trigger: merchSection,
                         start: "top bottom",
                         end: "top top",
-                        scrub: true,
-                        markers: true
+                        scrub: true
                     }
                 });
             }
-            if (merchSection) gsap.to(merchSection, {
-                left: 0,
-                duration: .5,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: merchSection,
-                    start: "top bottom",
-                    end: "top top",
-                    scrub: true
-                }
-            });
+            if (merchSection) {
+                gsap.to(merchSection, {
+                    left: 0,
+                    duration: .5,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: merchSection,
+                        start: "top bottom",
+                        end: "top top",
+                        scrub: true
+                    }
+                });
+                gsap.to(merchContainer, {
+                    left: "-50%",
+                    duration: .5,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: merchSection,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
             gsap.set([ navTitle, navFirstItem, partnersContainer ], {
                 clearProps: "all"
             });
