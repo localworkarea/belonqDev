@@ -5213,18 +5213,18 @@
                             left: "45%",
                             y: 0,
                             rotation: 0,
-                            duration: 2.2
+                            duration: 2.1
                         }, {
-                            left: 0,
+                            left: "0%",
                             top: "50%",
+                            duration: 1.2
+                        }, {
+                            left: "35%",
+                            top: "-40%",
                             duration: .9
                         }, {
-                            left: "40%",
-                            top: "-40%",
-                            duration: 1
-                        }, {
-                            top: "-40%",
                             left: "85%",
+                            top: "-40%",
                             duration: 1
                         }, {
                             left: "85%",
@@ -5232,12 +5232,12 @@
                             scale: 1.3,
                             duration: 2
                         }, {
-                            left: "70%",
+                            left: "60%",
                             top: "60%",
                             duration: 1
                         }, {
-                            left: "40%",
-                            top: "70%",
+                            left: "20%",
+                            top: "65%",
                             duration: 1
                         }, {
                             left: "30%",
@@ -5245,7 +5245,7 @@
                             duration: 1
                         }, {
                             left: "45%",
-                            top: "-60%",
+                            top: "-68%",
                             duration: 1
                         } ],
                         scrollTrigger: {
@@ -5260,23 +5260,23 @@
                                 if (progress === 0) scrollBtn.classList.remove("active"); else if (progress > .01 && progress < .22) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-1");
-                                    scrollBtn.classList.remove("step-2", "step-3", "step-4", "step-5", "step-6", "step-7");
+                                    scrollBtn.classList.remove("step-2", "step-3", "step-4", "step-5", "step-6", "step-7", "step-8", "step-9");
                                 } else if (progress >= .22 && progress < .3) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-2");
-                                    scrollBtn.classList.remove("step-1", "step-3", "step-4", "step-5", "step-6", "step-7");
+                                    scrollBtn.classList.remove("step-1", "step-3", "step-4", "step-5", "step-6", "step-7", "step-8", "step-9");
                                 } else if (progress >= .3 && progress < .36) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-3");
-                                    scrollBtn.classList.remove("step-1", "step-2", "step-4", "step-5", "step-6", "step-7");
-                                } else if (progress >= .36 && progress < .43) {
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-4", "step-5", "step-6", "step-7", "step-8", "step-9");
+                                } else if (progress >= .36 && progress < .42) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-4");
-                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-5", "step-6", "step-7");
-                                } else if (progress >= .43 && progress < .7) {
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-5", "step-6", "step-7", "step-8", "step-9");
+                                } else if (progress >= .42 && progress < .7) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-5");
-                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-6", "step-7");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-6", "step-7", "step-8", "step-9");
                                 } else if (progress >= .7 && progress < .86) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-6");
@@ -5284,11 +5284,15 @@
                                 } else if (progress >= .86 && progress < .94) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-7");
-                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-8");
-                                } else if (progress >= .94 && progress < 1) {
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-8", "step-9");
+                                } else if (progress >= .94 && progress < .985) {
                                     scrollBtn.classList.add("active");
                                     scrollBtn.classList.add("step-8");
-                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-7");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-7", "step-9");
+                                } else if (progress >= .985 && progress < 1) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-9");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-7", "step-8");
                                 }
                             }
                         }
@@ -5646,6 +5650,31 @@
             }));
         }
         createAnimation();
+    }));
+    const scrollBtn = document.querySelector(".scroll-btn");
+    let lastScrollTop = 0;
+    const delta = 20;
+    window.addEventListener("scroll", (() => {
+        const scrollTop = window.scrollY;
+        if (Math.abs(scrollTop - lastScrollTop) > delta) {
+            if (scrollTop > lastScrollTop) {
+                scrollBtn.classList.add("_move-dwn");
+                scrollBtn.classList.remove("_move-up");
+            } else if (scrollTop < lastScrollTop) {
+                scrollBtn.classList.add("_move-up");
+                scrollBtn.classList.remove("_move-dwn");
+            }
+            lastScrollTop = scrollTop;
+        }
+    }));
+    scrollBtn.addEventListener("click", (() => {
+        lenis.stop();
+        window.scrollTo({
+            top: 0
+        });
+        setTimeout((() => {
+            lenis.start();
+        }), 500);
     }));
     window["FLS"] = false;
     addLoadedClass();

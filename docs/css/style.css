@@ -274,7 +274,7 @@ body {
   opacity: 0;
   z-index: -1;
   transition: opacity .45s ease;
-  width: 12.5rem;
+  width: 11vw;
   aspect-ratio: 248/252
 }
 .scroll-btn svg {
@@ -304,30 +304,81 @@ body {
   fill: transparent;
   stroke: #fdda04
 }
+.scroll-btn.step-9 {
+  z-index: 2;
+  pointer-events: all
+}
+.scroll-btn.step-9 path {
+  fill: #fdda04;
+  stroke: #fdda04
+}
 .scroll-btn__body {
+  position: relative;
   transition: -webkit-transform .65s ease;
   transition: transform .65s ease;
   transition: transform .65s ease,-webkit-transform .65s ease
+}
+._move-up .scroll-btn__body {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg)
 }
 .step-2 .scroll-btn__body {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg)
 }
+.step-2._move-up .scroll-btn__body {
+  -webkit-transform: rotate(45deg) rotate(180deg);
+  transform: rotate(45deg) rotate(180deg)
+}
 .step-4 .scroll-btn__body {
   -webkit-transform: scale(4.5);
   transform: scale(4.5)
 }
+.step-4._move-up .scroll-btn__body {
+  -webkit-transform: scale(4.5) rotate(180deg);
+  transform: scale(4.5) rotate(180deg)
+}
 .step-5 .scroll-btn__body {
-  -webkit-transform: scale(1) rotate(90deg);
-  transform: scale(1) rotate(90deg)
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg)
+}
+.step-5._move-up .scroll-btn__body {
+  -webkit-transform: rotate(90deg) rotate(180deg);
+  transform: rotate(90deg) rotate(180deg)
 }
 .step-7 .scroll-btn__body {
-  -webkit-transform: scale(1) rotate(-45deg);
-  transform: scale(1) rotate(-45deg)
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg)
+}
+.step-7._move-up .scroll-btn__body {
+  -webkit-transform: rotate(-45deg) rotate(180deg);
+  transform: rotate(-45deg) rotate(180deg)
 }
 .step-8 .scroll-btn__body {
-  -webkit-transform: scale(1) rotate(90deg);
-  transform: scale(1) rotate(90deg)
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg)
+}
+.step-8._move-up .scroll-btn__body {
+  -webkit-transform: rotate(90deg) rotate(180deg);
+  transform: rotate(90deg) rotate(180deg)
+}
+.step-9 .scroll-btn__body {
+  -webkit-transform: rotate(90deg) rotate(180deg);
+  transform: rotate(90deg) rotate(180deg)
+}
+.scroll-btn__to-top {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  top: 90%;
+  color: #fdda04;
+  -webkit-transform: translate(0,-50%) rotate(90deg);
+  transform: translate(0,-50%) rotate(90deg);
+  transition: opacity .3s
+}
+.step-9 .scroll-btn__to-top {
+  opacity: 1;
+  transition-delay: .3s
 }
 .header {
   position: fixed;
@@ -1018,7 +1069,8 @@ body {
   grid-template-columns: 18% 70%;
   -webkit-column-gap: 12%;
   -moz-column-gap: 12%;
-  column-gap: 12%
+  column-gap: 12%;
+  background-color: #000
 }
 .portfolio__navigation {
   display: grid;
@@ -1063,7 +1115,8 @@ body {
   display: grid
 }
 .deck__title {
-  color: #fdda04
+  color: #fdda04;
+  background-color: #000
 }
 .deck__title.split-words.set-span .word {
   overflow: hidden
@@ -1109,7 +1162,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .625rem
+  gap: .625rem;
+  background-color: #000
 }
 .cubes-deck__item:nth-child(1) img {
   -webkit-filter: invert(87%) sepia(41%) saturate(1222%) hue-rotate(360deg) brightness(105%) contrast(99%);
@@ -1396,6 +1450,9 @@ body {
   background-position: center;
   aspect-ratio: 1/1
 }
+.merch__body {
+  background-color: #000
+}
 .merch__wrapper {
   height: 100%!important
 }
@@ -1472,6 +1529,9 @@ body {
   width: auto;
   height: 63%
 }
+.footer {
+  z-index: 1
+}
 .payment {
   padding-bottom: 3.125rem;
   position: relative
@@ -1481,6 +1541,7 @@ body {
   justify-content: flex-end
 }
 .payment__title {
+  background-color: #000;
   overflow: hidden
 }
 .payment__title span {
@@ -1504,7 +1565,8 @@ body {
   display: grid;
   -webkit-column-gap: 2vw;
   -moz-column-gap: 2vw;
-  column-gap: 2vw
+  column-gap: 2vw;
+  background-color: #000
 }
 .payment__txt {
   line-height: .95;
