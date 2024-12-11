@@ -5195,92 +5195,6 @@
                     }
                 });
             }
-            const scrollBtn = document.querySelector(".scroll-btn");
-            gsap.to(scrollBtn, {
-                keyframes: [ {
-                    left: "45%",
-                    y: 0,
-                    rotation: 0,
-                    duration: 2.2
-                }, {
-                    left: 0,
-                    top: "50%",
-                    duration: .9
-                }, {
-                    left: "40%",
-                    top: "-40%",
-                    duration: 1
-                }, {
-                    top: "-40%",
-                    left: "85%",
-                    duration: 1
-                }, {
-                    left: "85%",
-                    top: "50%",
-                    scale: 1.3,
-                    duration: 2
-                }, {
-                    left: "70%",
-                    top: "60%",
-                    duration: 1
-                }, {
-                    left: "40%",
-                    top: "70%",
-                    duration: 1
-                }, {
-                    left: "30%",
-                    top: "30%",
-                    duration: 1
-                }, {
-                    left: "45%",
-                    top: "-60%",
-                    duration: 1
-                } ],
-                scrollTrigger: {
-                    trigger: ".hero",
-                    start: "bottom top",
-                    endTrigger: ".footer",
-                    end: "450% bottom",
-                    scrub: true,
-                    invalidateOnRefresh: true,
-                    onUpdate: self => {
-                        let progress = self.progress;
-                        if (progress === 0) scrollBtn.classList.remove("active"); else if (progress > .01 && progress < .22) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-1");
-                            scrollBtn.classList.remove("step-2", "step-3", "step-4", "step-5", "step-6", "step-7");
-                        } else if (progress >= .22 && progress < .3) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-2");
-                            scrollBtn.classList.remove("step-1", "step-3", "step-4", "step-5", "step-6", "step-7");
-                        } else if (progress >= .3 && progress < .36) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-3");
-                            scrollBtn.classList.remove("step-1", "step-2", "step-4", "step-5", "step-6", "step-7");
-                        } else if (progress >= .36 && progress < .43) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-4");
-                            scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-5", "step-6", "step-7");
-                        } else if (progress >= .43 && progress < .7) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-5");
-                            scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-6", "step-7");
-                        } else if (progress >= .7 && progress < .86) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-6");
-                            scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-7", "step-8");
-                        } else if (progress >= .86 && progress < .94) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-7");
-                            scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-8");
-                        } else if (progress >= .94 && progress < 1) {
-                            scrollBtn.classList.add("active");
-                            scrollBtn.classList.add("step-8");
-                            scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-7");
-                        }
-                    }
-                }
-            });
             gsap.set([ navTitle, navFirstItem, partnersContainer ], {
                 clearProps: "all"
             });
@@ -5293,6 +5207,92 @@
             }, (context => {
                 let {portrait, landscape, landscapeMax1366, maxWidth488} = context.conditions;
                 if (landscape) {
+                    const scrollBtn = document.querySelector(".scroll-btn");
+                    gsap.to(scrollBtn, {
+                        keyframes: [ {
+                            left: "45%",
+                            y: 0,
+                            rotation: 0,
+                            duration: 2.2
+                        }, {
+                            left: 0,
+                            top: "50%",
+                            duration: .9
+                        }, {
+                            left: "40%",
+                            top: "-40%",
+                            duration: 1
+                        }, {
+                            top: "-40%",
+                            left: "85%",
+                            duration: 1
+                        }, {
+                            left: "85%",
+                            top: "50%",
+                            scale: 1.3,
+                            duration: 2
+                        }, {
+                            left: "70%",
+                            top: "60%",
+                            duration: 1
+                        }, {
+                            left: "40%",
+                            top: "70%",
+                            duration: 1
+                        }, {
+                            left: "30%",
+                            top: "30%",
+                            duration: 1
+                        }, {
+                            left: "45%",
+                            top: "-60%",
+                            duration: 1
+                        } ],
+                        scrollTrigger: {
+                            trigger: ".hero",
+                            start: "bottom top",
+                            endTrigger: ".footer",
+                            end: "450% bottom",
+                            scrub: true,
+                            invalidateOnRefresh: true,
+                            onUpdate: self => {
+                                let progress = self.progress;
+                                if (progress === 0) scrollBtn.classList.remove("active"); else if (progress > .01 && progress < .22) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-1");
+                                    scrollBtn.classList.remove("step-2", "step-3", "step-4", "step-5", "step-6", "step-7");
+                                } else if (progress >= .22 && progress < .3) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-2");
+                                    scrollBtn.classList.remove("step-1", "step-3", "step-4", "step-5", "step-6", "step-7");
+                                } else if (progress >= .3 && progress < .36) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-3");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-4", "step-5", "step-6", "step-7");
+                                } else if (progress >= .36 && progress < .43) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-4");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-5", "step-6", "step-7");
+                                } else if (progress >= .43 && progress < .7) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-5");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-6", "step-7");
+                                } else if (progress >= .7 && progress < .86) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-6");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-7", "step-8");
+                                } else if (progress >= .86 && progress < .94) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-7");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-8");
+                                } else if (progress >= .94 && progress < 1) {
+                                    scrollBtn.classList.add("active");
+                                    scrollBtn.classList.add("step-8");
+                                    scrollBtn.classList.remove("step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-7");
+                                }
+                            }
+                        }
+                    });
                     const itemFirstTxt = document.querySelectorAll(".item-first__txt .word .word-span");
                     if (itemFirstTxt) gsap.to(itemFirstTxt, {
                         y: "0%",
