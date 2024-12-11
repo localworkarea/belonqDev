@@ -257,6 +257,78 @@ body {
   letter-spacing: -.05em;
   line-height: 1
 }
+.scroll-btn__wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none
+}
+.scroll-btn {
+  position: fixed;
+  pointer-events: none;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity .45s ease;
+  width: 12.5rem;
+  aspect-ratio: 248/252
+}
+.scroll-btn svg {
+  width: 100%;
+  aspect-ratio: 248/252
+}
+.scroll-btn svg path {
+  fill: #fff;
+  stroke: #fff;
+  transition: fill .65s ease,stroke .65s ease
+}
+.scroll-btn.active {
+  opacity: 1
+}
+.scroll-btn.step-1 {
+  z-index: 1
+}
+.scroll-btn.step-3 path,
+.scroll-btn.step-4 path {
+  fill: #fdda04;
+  stroke: #fdda04
+}
+.scroll-btn.step-5 path,
+.scroll-btn.step-6 path,
+.scroll-btn.step-7 path,
+.scroll-btn.step-8 path {
+  fill: transparent;
+  stroke: #fdda04
+}
+.scroll-btn__body {
+  transition: -webkit-transform .65s ease;
+  transition: transform .65s ease;
+  transition: transform .65s ease,-webkit-transform .65s ease
+}
+.step-2 .scroll-btn__body {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg)
+}
+.step-4 .scroll-btn__body {
+  -webkit-transform: scale(4.5);
+  transform: scale(4.5)
+}
+.step-5 .scroll-btn__body {
+  -webkit-transform: scale(1) rotate(90deg);
+  transform: scale(1) rotate(90deg)
+}
+.step-7 .scroll-btn__body {
+  -webkit-transform: scale(1) rotate(-45deg);
+  transform: scale(1) rotate(-45deg)
+}
+.step-8 .scroll-btn__body {
+  -webkit-transform: scale(1) rotate(90deg);
+  transform: scale(1) rotate(90deg)
+}
 .header {
   position: fixed;
   z-index: 20;

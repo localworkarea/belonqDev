@@ -10,7 +10,7 @@
 			opacity: 0;
 		}
 	</style>
-	<link rel="stylesheet" href="css/style.min.css?_v=20241211141648">
+	<link rel="stylesheet" href="css/style.min.css?_v=20241211182057">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -584,7 +584,6 @@
 					<div class="deck__top">
 						<div class="deck__head head-deck">
 							<div class="head-deck__item">
-								<!-- <img class="head-deck__3d ibg ibg--contain" src="img/deck/head.webp" width="138" height="125" alt="3d head"> -->
 								<video class="head-deck__3d ibg ibg--contain" width="138" height="125" autoplay muted playsinline>
 									<source src="files/Head.mp4" type="video/mp4">
 								</video>
@@ -1005,6 +1004,7 @@
 			</ul>
 		</div>
 	</footer>
+	<div class="end-trigger"></div>
 	<div data-lenis-prevent class="modal-video">
 		<div class="modal-video__wrapper">
 			<div class="modal-video__content">
@@ -1020,15 +1020,19 @@
 	</div>
 
 	<!-- <canvas class="elements-3d"></canvas> -->
-	<!-- <button class="scroll-btn" type="button" aria-label="scroll-btn">
+	<!-- <div class="scroll-btn__wrapper"> -->
+	<button class="scroll-btn" type="button" aria-label="scroll-btn">
+		<div class="scroll-btn__body">
 			<svg width="248" height="252" viewBox="0 0 248 252" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M124.203 249.492L223.225 150.47L224.669 102.47L26.3997 103.871L26.4988 148.72L162.661 147.759L92.5658 217.854L124.203 249.492ZM204.81 83.7837L123.617 2.59082L91.8255 34.3821L139.203 81.7598L204.81 83.7837Z" fill="white" stroke="#FEED01" stroke-width="3"/>
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M124.203 249.492L223.225 150.47L224.669 102.47L26.3997 103.871L26.4988 148.72L162.661 147.759L92.5658 217.854L124.203 249.492ZM204.81 83.7837L123.617 2.59082L91.8255 34.3821L139.203 81.7598L204.81 83.7837Z" fill="white" stroke="#FEED01" stroke-width="3" />
 			</svg>
-		</button> -->
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js?_v=20241211141648"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js?_v=20241211141648"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js?_v=20241211141648"></script>
-	<script src="js/app.min.js?_v=20241211141648"></script>
+		</div>
+	</button>
+	<!-- </div> -->
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js?_v=20241211182057"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js?_v=20241211182057"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js?_v=20241211182057"></script>
+	<script src="js/app.min.js?_v=20241211182057"></script>
 </body>
 
 </html>
