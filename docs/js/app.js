@@ -4630,9 +4630,8 @@
     }
     const lenis = new Lenis({
         smooth: true,
-        smoothTouch: true,
         lerp: .05,
-        mouseMultiplier: 3
+        mouseMultiplier: 2
     });
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add((time => {
@@ -4640,6 +4639,48 @@
     }));
     gsap.ticker.lagSmoothing(0);
     window.addEventListener("DOMContentLoaded", (() => {
+        const canvas = document.getElementById("canvasModel");
+        if (canvas) {
+            const speed = 40;
+            const ctx = canvas.getContext("2d");
+            let marioTimer = null;
+            const mario = {
+                img: null,
+                x: 0,
+                y: 0,
+                width: 593,
+                height: 850,
+                currentframe: 0,
+                totalframes: 65
+            };
+            mario.img = new Image;
+            mario.img.src = "img/model/left-min.png";
+            function animateMario() {
+                mario.currentframe++;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(mario.img, mario.currentframe * mario.width, 0, mario.width, mario.height, 0, 0, mario.width, mario.height);
+                if (mario.currentframe >= mario.totalframes) {
+                    clearInterval(marioTimer);
+                    canvas.style.display = "none";
+                    document.getElementById("lastModel").style.display = "block";
+                }
+            }
+            mario.img.onload = function() {
+                const observer = new IntersectionObserver((entries => {
+                    entries.forEach((entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio >= .3) {
+                            animateMario();
+                            marioTimer = setInterval(animateMario, speed);
+                            document.getElementById("firstModel").style.display = "none";
+                            observer.unobserve(entry.target);
+                        }
+                    }));
+                }), {
+                    threshold: [ .3 ]
+                });
+                observer.observe(canvas);
+            };
+        }
         let isAnimating = false;
         let portfolioSlider;
         if (document.querySelector(".portfolio__slider")) {
@@ -4723,11 +4764,13 @@
                     modalContent.appendChild(videoElement);
                     modal.classList.add("_active");
                     document.documentElement.classList.add("lock");
+                    document.documentElement.classList.add("video-modal");
                 }));
             }));
             modalCloseButton.addEventListener("click", (() => {
                 modal.classList.remove("_active");
                 document.documentElement.classList.remove("lock");
+                document.documentElement.classList.remove("video-modal");
                 const video = modalContent.querySelector("video");
                 setTimeout((() => {
                     if (video) {
@@ -4736,6 +4779,38 @@
                     }
                     modalContent.innerHTML = "";
                 }), 500);
+            }));
+        }
+        const videoHead = document.querySelector(".head-deck__3d");
+        if (videoHead) {
+            const observerOptions = {
+                root: null,
+                threshold: [ .8, 1 ]
+            };
+            const observer = new IntersectionObserver((entries => {
+                entries.forEach((entry => {
+                    if (entry.intersectionRatio >= .5) {
+                        if (videoHead.paused) {
+                            videoHead.currentTime = 0;
+                            videoHead.play();
+                        }
+                    } else if (entry.intersectionRatio === 0) {
+                        videoHead.pause();
+                        videoHead.currentTime = 0;
+                    }
+                }));
+            }), observerOptions);
+            observer.observe(videoHead);
+            let isEnded = false;
+            videoHead.addEventListener("ended", (() => {
+                isEnded = true;
+            }));
+            videoHead.addEventListener("mouseover", (() => {
+                if (isEnded) {
+                    videoHead.currentTime = 0;
+                    videoHead.play();
+                    isEnded = false;
+                }
             }));
         }
         function updateHeroHeight() {
@@ -4835,18 +4910,19 @@
         const advisers = document.querySelector(".advisers");
         const advisersBlock = document.querySelector(".advisers__block");
         const advisersListItems = document.querySelectorAll(".list-advisers__item");
-        document.querySelector(".hrz-sections");
-        document.querySelector(".hrz-sections__wrapper");
+        document.querySelector(".portf-deck");
+        document.querySelector(".portf-deck__body");
         const portfolioSection = document.querySelector(".portfolio");
         const portfolioContainer = document.querySelector(".portfolio__container");
+        document.querySelector(".portfolio__body");
         const deckSection = document.querySelector(".deck");
         const deckContainer = document.querySelector(".deck__container");
         const deckTop = document.querySelector(".deck__top");
         const deckBtm = document.querySelector(".deck__btm");
         const deckListItemSmm = document.querySelector(".list-deck__item.item-smm");
         document.querySelector(".list-deck__item.item-3d");
-        const deckMenItem = document.querySelector(".men-deck__item");
-        const deckMenEl = document.querySelector(".men-deck__el");
+        document.querySelector(".men-deck__item");
+        document.querySelector(".men-deck__model");
         const merchSection = document.querySelector(".merch");
         const merchContainer = document.querySelector(".merch__container");
         const footer = document.querySelector(".footer");
@@ -5084,16 +5160,6 @@
                         scrub: true
                     }
                 });
-                gsap.to(deckMenEl, {
-                    y: "0%",
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: deckMenItem,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
                 gsap.to(deckContainer, {
                     left: "-50%",
                     ease: "none",
@@ -5178,20 +5244,20 @@
                     }
                     const partnersContainer = document.querySelector(".partners__container");
                     if (partnersSection) {
+                        gsap.set(partnersContainer, {
+                            left: "50%"
+                        });
                         gsap.timeline({
                             scrollTrigger: {
                                 trigger: partnersSection,
                                 start: "top bottom",
                                 end: "160% bottom",
-                                scrub: true
+                                scrub: true,
+                                invalidateOnRefresh: true
                             }
                         }).to(partnersContainer, {
-                            x: "-50%",
+                            left: "-50%",
                             ease: "none"
-                        }).to(partnersContainer, {
-                            x: "-100%",
-                            ease: "none",
-                            opacity: 0
                         });
                         gsap.timeline({
                             scrollTrigger: {
@@ -5340,11 +5406,9 @@
                                 id: "footerTrigger",
                                 trigger: footer,
                                 start: "top 10%",
-                                end: () => `+=${(footerBody.scrollWidth - footerBody.offsetWidth) / 1}`,
+                                end: () => `+=${footerBody.scrollWidth - footerBody.offsetWidth}`,
                                 scrub: true,
-                                pin: true,
-                                anticipatePin: 1,
-                                invalidateOnRefresh: true
+                                pin: true
                             }
                         });
                         gsap.to(contactsContainer, {
@@ -5404,6 +5468,9 @@
                     });
                     const partnersContainer = document.querySelector(".partners__container");
                     if (partnersSection) {
+                        gsap.set(partnersContainer, {
+                            left: "50%"
+                        });
                         gsap.timeline({
                             scrollTrigger: {
                                 trigger: partnersSection,
@@ -5413,10 +5480,7 @@
                                 invalidateOnRefresh: true
                             }
                         }).to(partnersContainer, {
-                            x: "-50%",
-                            ease: "none"
-                        }).to(partnersContainer, {
-                            x: "-100%",
+                            left: "-70%",
                             ease: "none"
                         });
                         gsap.timeline({
@@ -5493,8 +5557,6 @@
                         }
                     });
                 }
-                if (landscapeMax1366) ;
-                if (maxWidth488) ;
             }));
         }
         createAnimation();
