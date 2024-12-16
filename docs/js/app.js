@@ -4659,6 +4659,50 @@
     }));
     gsap.ticker.lagSmoothing(0);
     window.addEventListener("DOMContentLoaded", (() => {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollToPlugin);
+        const eyeballs = document.querySelectorAll(".eyeball");
+        if (eyeballs.length > 0) {
+            const squares = document.querySelectorAll(".square");
+            const eyeConfig = {
+                irisRadius: 36,
+                pupilRadius: 16
+            };
+            const getEyeCenter = eyeball => {
+                const rect = eyeball.getBoundingClientRect();
+                return {
+                    centerX: rect.left + rect.width / 2,
+                    centerY: rect.top + rect.height / 2,
+                    radius: eyeConfig.irisRadius - eyeConfig.pupilRadius
+                };
+            };
+            const constrain = (x, y, radius) => {
+                const distance = Math.sqrt(x * x + y * y);
+                if (distance > radius) {
+                    const angle = Math.atan2(y, x);
+                    return {
+                        x: Math.cos(angle) * radius,
+                        y: Math.sin(angle) * radius
+                    };
+                }
+                return {
+                    x,
+                    y
+                };
+            };
+            document.addEventListener("mousemove", (event => {
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+                eyeballs.forEach(((eyeball, index) => {
+                    const square = squares[index];
+                    const {centerX, centerY, radius} = getEyeCenter(eyeball);
+                    const dx = mouseX - centerX;
+                    const dy = mouseY - centerY;
+                    const {x, y} = constrain(dx, dy, radius);
+                    square.style.transform = `translate(${x}px, ${y}px)`;
+                }));
+            }));
+        }
         const canvas = document.getElementById("canvasModel");
         if (canvas) {
             const canvasHoverEl = document.querySelector(".men-deck__hover-el");
@@ -4951,8 +4995,6 @@
             }
         }
         updateHeroHeight();
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.registerPlugin(ScrollToPlugin);
         const splitTextLines = document.querySelectorAll(".split-lines");
         const splitTextWords = document.querySelectorAll(".split-words");
         const splitTextChars = document.querySelectorAll(".split-chars");
@@ -5067,9 +5109,6 @@
         const getContactsTxts = document.querySelector(".get-contacts__txts");
         const footerList = document.querySelector(".footer-list");
         function createAnimation() {
-            ScrollTrigger.defaults({
-                smoothTouch: true
-            });
             ScrollTrigger.getAll().forEach((trigger => trigger.kill()));
             if (heroTitle) {
                 const heroTitleAline = document.querySelectorAll(".title-hero .split-chars");
