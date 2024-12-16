@@ -1066,10 +1066,6 @@ body {
   display: grid;
   align-items: center;
   margin-inline: auto;
-  grid-template-columns: 18% 70%;
-  -webkit-column-gap: 12%;
-  -moz-column-gap: 12%;
-  column-gap: 12%;
   background-color: #000
 }
 .portfolio__navigation {
@@ -1086,13 +1082,10 @@ body {
   filter: invert(36%) sepia(5%) saturate(137%) hue-rotate(314deg) brightness(91%) contrast(92%)
 }
 .portfolio__slider {
-  aspect-ratio: 864/738
+  aspect-ratio: 1316/740
 }
 .portfolio__wrapper {
   height: 100%!important
-}
-.portfolio__slide {
-  border: .0625rem solid rgba(255,255,255,.2)
 }
 .portfolio__slide .slide-portfolio {
   height: 100%;
@@ -1100,7 +1093,7 @@ body {
   background-color: #000
 }
 .portfolio__slide .slide-portfolio img {
-  aspect-ratio: 864/738
+  aspect-ratio: 1316/740
 }
 .deck__container {
   position: relative
@@ -1262,8 +1255,19 @@ body {
   background-position: center;
   background-size: contain
 }
+.men-deck__hover-el {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translate(-60%,-12%);
+  transform: translate(-60%,-12%);
+  width: 40%;
+  height: 50%
+}
 .men-deck__model {
-  pointer-events: none;
+  overflow: hidden;
+  position: relative;
   width: 100%;
   aspect-ratio: 593/850;
   z-index: 5
@@ -1343,44 +1347,46 @@ body {
   inset: 0;
   z-index: 50;
   padding: .625rem;
-  background-color: rgba(0,0,0,.9);
   opacity: 0;
   pointer-events: none;
-  transition: opacity .6s ease;
+  transition: opacity .3s ease .8s;
   overflow-y: auto
+}
+.modal-video::before {
+  content: "";
+  z-index: 0;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-color: rgba(0,0,0,.9);
+  transition: opacity .8s ease 0s
 }
 .modal-video._active {
   opacity: 1;
-  pointer-events: all
+  pointer-events: all;
+  transition-delay: 0s
 }
-.modal-video._active .modal-video__content {
-  -webkit-transform: scale(1);
-  transform: scale(1)
+.modal-video._active::before {
+  opacity: 1
 }
 .modal-video._active .modal-video__close {
   opacity: 1;
   transition: border .3s ease,opacity .45s ease .4s
 }
 .modal-video__wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
   min-height: 100%;
   flex: 1 1 auto;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center
 }
 .modal-video__content {
-  position: relative;
-  width: 100%;
+  position: absolute;
   background-color: #000;
-  -webkit-transform: scale(.5);
-  transform: scale(.5);
-  transition: -webkit-transform .65s ease;
-  transition: transform .65s ease;
-  transition: transform .65s ease,-webkit-transform .65s ease
+  transition: all .8s ease
 }
 .modal-video__close {
   position: absolute;
@@ -1419,7 +1425,8 @@ body {
 }
 .merch {
   position: relative;
-  left: 50%
+  left: 50%;
+  padding-top: 3.125rem
 }
 .merch__container {
   position: relative
@@ -1465,9 +1472,12 @@ body {
   background-color: #000
 }
 .merch__slide .slide-merch img {
-  aspect-ratio: 840/700
+  aspect-ratio: 1316/740
 }
 .nav-merch {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   position: relative;
   background-image: url(../img/icon/frame-vertical.webp)
 }
@@ -1800,12 +1810,24 @@ body {
   .partners__lists {
     padding-inline: 6vw
   }
-  .portfolio__body {
-    width: 65%
-  }
   .merch__body {
-    max-width: 89%;
     margin-inline: auto
+  }
+}
+@media (orientation:portrait)and (min-width:30.06125em) {
+  .merch__title::before {
+    left: 17vw;
+    width: 5vw
+  }
+  .nav-merch {
+    padding: 6vw 6vw 6vw 12vw;
+    margin-inline: 18vw
+  }
+  .nav-merch__body {
+    grid-auto-rows: 6vw
+  }
+  .nav-merch__nav-btn {
+    font-size: 3.3vw
   }
 }
 @media (min-width:48.06125em) {
@@ -1839,6 +1861,14 @@ body {
 @media (min-width:90.06125em) {
   .social-header__link {
     width: 3.75rem
+  }
+}
+@media (min-width:100.06125em) {
+  .portfolio__body {
+    grid-template-columns: 13% 78%;
+    -webkit-column-gap: 4%;
+    -moz-column-gap: 4%;
+    column-gap: 4%
   }
 }
 @media (min-width:120em) {
@@ -1936,6 +1966,14 @@ body {
     row-gap: .625rem
   }
 }
+@media (max-width:100.06125em) {
+  .portfolio__body {
+    grid-template-columns: 13% 86%;
+    -webkit-column-gap: 3%;
+    -moz-column-gap: 3%;
+    column-gap: 3%
+  }
+}
 @media (max-width:90.06125em) {
   .partners__head {
     margin-bottom: 4.375rem
@@ -2012,6 +2050,23 @@ body {
   }
   .nav-first__txt {
     margin-bottom: .625rem
+  }
+  .merch {
+    margin-bottom: 6.25rem!important
+  }
+  .merch__title::before {
+    width: 5vw;
+    left: 10vw
+  }
+  .nav-merch {
+    padding: 6vw 8vw 6vw 12vw;
+    margin-inline: 11vw
+  }
+  .nav-merch__body {
+    grid-auto-rows: 8vw
+  }
+  .nav-merch__nav-btn {
+    font-size: 4vw
   }
 }
 @media (orientation:portrait)and (max-width:30.06125em) {
@@ -2262,7 +2317,7 @@ body {
     justify-self: right
   }
   .deck__block {
-    margin-bottom: 20vw;
+    margin-bottom: 25vw;
     grid-template-columns: 4fr 1fr
   }
   .head-deck__item {
@@ -2329,19 +2384,19 @@ body {
     right: .3125rem
   }
   .merch__title::before {
-    width: 4vw;
-    left: 4vw
+    width: 3.5vw;
+    left: -1vw
   }
   .merch__title {
-    padding-left: 10vw;
+    padding-left: 2.5vw;
     font-size: 8vw!important
   }
   .merch__body {
     display: grid;
-    grid-template-columns: 1fr 52%;
-    -webkit-column-gap: 6.5vw;
-    -moz-column-gap: 6.5vw;
-    column-gap: 6.5vw
+    grid-template-columns: 1fr 65%;
+    -webkit-column-gap: 3vw;
+    -moz-column-gap: 3vw;
+    column-gap: 3vw
   }
   .nav-merch {
     padding: 2.6vw 2.6vw 2.6vw 5.5vw
@@ -2353,7 +2408,7 @@ body {
     grid-auto-rows: 3.4vw
   }
   .nav-merch__nav-btn {
-    font-size: 2.1vw
+    font-size: 1.9vw
   }
   .footer__body {
     display: grid;
@@ -2728,30 +2783,24 @@ body {
     top: -3.125rem;
     right: 0
   }
-  .merch__title::before {
-    left: 7vw;
-    width: 5vw
-  }
   .merch__title {
     padding-left: 5vw;
-    font-size: 17vw!important;
+    font-size: 15vw!important;
     text-align: center
   }
   .merch__navigationm {
-    margin-bottom: 5vw
+    margin-bottom: 3vw
   }
-  .nav-merch {
-    padding: 8vw 8vw 8vw 12vw;
-    margin-inline: 8vw
+  .merch__slider {
+    position: relative;
+    left: 50%;
+    -webkit-transform: translate(-50%,0);
+    transform: translate(-50%,0);
+    aspect-ratio: 1316/740;
+    width: 100%!important
   }
   .nav-merch__subtitle {
-    font-size: 3.8vw
-  }
-  .nav-merch__body {
-    grid-auto-rows: 8vw
-  }
-  .nav-merch__nav-btn {
-    font-size: 4.25vw
+    font-size: 3.3vw
   }
   .payment._watcher-view .payment__item {
     opacity: 1
