@@ -443,7 +443,6 @@ body {
   transition: opacity .65s ease
 }
 .swipe._watcher-view {
-  opacity: 0;
   transition-delay: 6s
 }
 .swipe__body {
@@ -1090,8 +1089,20 @@ body {
   position: relative
 }
 .partners__head {
+  position: relative;
   display: grid;
   gap: 1.25rem
+}
+.partners__head .swipe {
+  position: absolute!important
+}
+.partners__head .swipe .swipe__body {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+  order: 2
+}
+.partners__head .swipe .swipe__txt {
+  order: 1
 }
 .partners__title {
   color: #fdda04;
@@ -1108,9 +1119,9 @@ body {
   position: relative;
   display: grid;
   grid-template-columns: repeat(3,1fr);
-  -webkit-column-gap: 5vw;
-  -moz-column-gap: 5vw;
-  column-gap: 5vw
+  -webkit-column-gap: 3.5vw;
+  -moz-column-gap: 3.5vw;
+  column-gap: 3.5vw
 }
 .partners__list {
   position: relative;
@@ -1129,10 +1140,52 @@ body {
 .partners__list:nth-child(3) {
   top: 120%
 }
+.sliders-partners__slider {
+  aspect-ratio: 244/400
+}
+.sliders-partners__slide {
+  width: 100%;
+  opacity: 0;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+.sliders-partners__slide.swiper-slide-visible {
+  opacity: 1
+}
+.sliders-partners__slide.swiper-slide-visible .slide-partn {
+  opacity: .3;
+  transition: none!important
+}
+.sliders-partners__slide.swiper-slide-prev .slide-partn {
+  opacity: .8
+}
+.sliders-partners__slide.swiper-slide-active .slide-partn {
+  opacity: 1
+}
+.sliders-partners__slide.swiper-slide-next .slide-partn {
+  opacity: .3
+}
+.slide-partn {
+  background-color: #000;
+  width: 100%;
+  aspect-ratio: 244/80;
+  transition: opacity .45s ease,-webkit-transform .15s ease;
+  transition: opacity .45s ease,transform .15s ease;
+  transition: opacity .45s ease,transform .15s ease,-webkit-transform .15s ease;
+  pointer-events: none
+}
+.slide-partn__img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+  object-fit: contain;
+  display: block;
+  margin-inline: auto
+}
 .advisers {
   display: grid;
   position: relative;
-  left: 20%;
   -webkit-transform: translateY(30%);
   transform: translateY(30%)
 }
@@ -1928,6 +1981,32 @@ body {
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d
 }
+.swiper-centered>.swiper-wrapper::before {
+  content: "";
+  flex-shrink: 0;
+  order: 9999
+}
+.swiper-centered.swiper-horizontal>.swiper-wrapper>.swiper-slide:first-child {
+  -webkit-margin-start: var(--swiper-centered-offset-before);
+  margin-inline-start: var(--swiper-centered-offset-before)
+}
+.swiper-centered.swiper-horizontal>.swiper-wrapper::before {
+  height: 100%;
+  min-height: 1px;
+  width: var(--swiper-centered-offset-after)
+}
+.swiper-centered.swiper-vertical>.swiper-wrapper>.swiper-slide:first-child {
+  -webkit-margin-before: var(--swiper-centered-offset-before);
+  margin-block-start: var(--swiper-centered-offset-before)
+}
+.swiper-centered.swiper-vertical>.swiper-wrapper::before {
+  width: 100%;
+  min-width: 1px;
+  height: var(--swiper-centered-offset-after)
+}
+.swiper-centered>.swiper-wrapper>.swiper-slide {
+  scroll-snap-align: center center
+}
 .swiper-cube {
   overflow: visible
 }
@@ -2131,9 +2210,6 @@ body {
   .partners__list {
     row-gap: 1.25rem
   }
-  .partners__item {
-    height: 7.5rem
-  }
 }
 @media (max-width:64em) {
   [class*=__container] {
@@ -2203,9 +2279,6 @@ body {
   .item-services__title img,
   .video-deck__play img {
     height: 1.5rem
-  }
-  .partners__item {
-    height: 2.375rem
   }
 }
 @media (orientation:landscape)and (max-width:51.31125em) {
@@ -2433,9 +2506,6 @@ body {
   .partners__list {
     row-gap: clamp(.625rem ,-.0006383467rem + .5210993111vw ,1.25rem)
   }
-  .partners__item {
-    height: clamp(3.5rem ,-.5040854186rem + 3.3350355911vw ,7.5rem)
-  }
 }
 @media (min-width:30.06125em)and (max-width:120.06125em) {
   .nav-first__body {
@@ -2457,9 +2527,6 @@ body {
   .item-services__title img,
   .video-deck__play img {
     height: clamp(1.5rem ,.5705398996rem + 1.4508928571vw ,2.3125rem)
-  }
-  .partners__item {
-    height: clamp(2.375rem ,1.0880552455rem + 2.0089285714vw ,3.5rem)
   }
 }
 @media (min-width:90.06125em)and (max-width:120em) {
@@ -2543,7 +2610,12 @@ body {
   .partners__head {
     grid-template-columns: auto 1fr
   }
+  .partners__head .swipe {
+    bottom: 2vw;
+    left: 32vw
+  }
   .advisers {
+    left: 20%;
     grid-template-columns: 1fr 58%
   }
   .advisers__eye-svg {
@@ -2975,6 +3047,10 @@ body {
   }
   .item-services__txt {
     font-size: 1.8vw
+  }
+  .partners__head .swipe {
+    right: 10vw;
+    top: 10vw
   }
   .advisers {
     grid-template-columns: 30% 1fr
