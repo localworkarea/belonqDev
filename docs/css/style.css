@@ -387,10 +387,6 @@ body {
   background-color: #000;
   aspect-ratio: 262/120
 }
-.cubes-deck:hover .cubes-deck__item {
-  -webkit-transform: translateZ(0) rotateX(90deg);
-  transform: translateZ(0) rotateX(90deg)
-}
 .cubes-deck__item {
   -webkit-perspective: 10000px;
   perspective: 10000px;
@@ -402,6 +398,10 @@ body {
   transition: -webkit-transform .65s ease;
   transition: transform .65s ease;
   transition: transform .65s ease,-webkit-transform .65s ease
+}
+.cubes-deck__item:hover {
+  -webkit-transform: translateZ(0) rotateX(90deg);
+  transform: translateZ(0) rotateX(90deg)
 }
 .cubes-deck__item.item-deck-1 {
   transition-delay: 0s
@@ -443,6 +443,7 @@ body {
   transition: opacity .65s ease
 }
 .swipe._watcher-view {
+  opacity: 0;
   transition-delay: 6s
 }
 .swipe__body {
@@ -2629,7 +2630,8 @@ body {
     font-size: 1.5vw
   }
   .list-advisers {
-    grid-template-columns: repeat(3,1fr)
+    grid-template-columns: repeat(3,1fr);
+    row-gap: 2vw
   }
   .list-advisers__item {
     grid-template-columns: 48% 1fr
