@@ -4998,7 +4998,6 @@
         });
     }
     const lenis = new Lenis({
-        smooth: true,
         lerp: .05,
         mouseMultiplier: 2
     });
@@ -5007,403 +5006,19 @@
         lenis.raf(time * 1e3);
     }));
     gsap.ticker.lagSmoothing(0);
+    const heroSection = document.querySelector(".hero");
+    function checkAndScrollToTop() {
+        const heroRect = heroSection.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) setTimeout((() => {
+            document.documentElement.classList.remove("lock-body");
+        }), 1500); else document.documentElement.classList.remove("lock-body");
+    }
+    setTimeout((() => {
+        checkAndScrollToTop();
+    }), 0);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     window.addEventListener("DOMContentLoaded", (() => {
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.registerPlugin(ScrollToPlugin);
-        const eyeballs = document.querySelectorAll(".eyeball");
-        if (eyeballs.length > 0) {
-            const squares = document.querySelectorAll(".square");
-            const eyeConfig = {
-                irisRadius: 36,
-                pupilRadius: 16
-            };
-            const getEyeCenter = eyeball => {
-                const rect = eyeball.getBoundingClientRect();
-                return {
-                    centerX: rect.left + rect.width / 2,
-                    centerY: rect.top + rect.height / 2,
-                    radius: eyeConfig.irisRadius - eyeConfig.pupilRadius
-                };
-            };
-            const constrain = (x, y, radius) => {
-                const distance = Math.sqrt(x * x + y * y);
-                if (distance > radius) {
-                    const angle = Math.atan2(y, x);
-                    return {
-                        x: Math.cos(angle) * radius,
-                        y: Math.sin(angle) * radius
-                    };
-                }
-                return {
-                    x,
-                    y
-                };
-            };
-            document.addEventListener("mousemove", (event => {
-                const mouseX = event.clientX;
-                const mouseY = event.clientY;
-                eyeballs.forEach(((eyeball, index) => {
-                    const square = squares[index];
-                    const {centerX, centerY, radius} = getEyeCenter(eyeball);
-                    const dx = mouseX - centerX;
-                    const dy = mouseY - centerY;
-                    const {x, y} = constrain(dx, dy, radius);
-                    square.style.transform = `translate(${x}px, ${y}px)`;
-                }));
-            }));
-        }
-        const canvas = document.getElementById("canvasModel");
-        if (canvas) {
-            const canvasHoverEl = document.querySelector(".men-deck__hover-el");
-            const speed = 40;
-            const ctx = canvas.getContext("2d");
-            let marioTimer = null;
-            const mario = {
-                img: new Image,
-                x: 0,
-                y: 0,
-                width: 593,
-                height: 850,
-                currentframe: 0,
-                totalframes: 65
-            };
-            mario.img.src = "files/left-min.png";
-            function resetMario() {
-                clearInterval(marioTimer);
-                marioTimer = null;
-                mario.currentframe = 0;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(mario.img, mario.currentframe * mario.width, 0, mario.width, mario.height, 0, 0, mario.width, mario.height);
-            }
-            mario.img.onload = resetMario;
-            function animateMario() {
-                mario.currentframe++;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(mario.img, mario.currentframe * mario.width, 0, mario.width, mario.height, 0, 0, mario.width, mario.height);
-                if (mario.currentframe >= mario.totalframes - 1) {
-                    clearInterval(marioTimer);
-                    mario.currentframe = mario.totalframes - 1;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(mario.img, mario.currentframe * mario.width, 0, mario.width, mario.height, 0, 0, mario.width, mario.height);
-                }
-            }
-            const observer = new IntersectionObserver((entries => {
-                entries.forEach((entry => {
-                    if (entry.isIntersecting) if (isMobile.any()) {
-                        if (!marioTimer) marioTimer = setInterval(animateMario, speed);
-                    } else canvasHoverEl.addEventListener("mouseenter", startAnimation); else resetMario();
-                }));
-            }), {
-                threshold: .1
-            });
-            function startAnimation() {
-                if (!marioTimer) marioTimer = setInterval(animateMario, speed);
-            }
-            observer.observe(canvas);
-        }
-        if (document.querySelector(".portfolio__slider")) {
-            const portfolioSlider = new Swiper(".portfolio__slider", {
-                modules: [ EffectCube ],
-                observer: true,
-                observeParents: true,
-                slidesPerView: 1,
-                spaceBetween: 0,
-                autoHeight: true,
-                speed: 500,
-                direction: "vertical",
-                effect: "cube",
-                cubeEffect: {
-                    shadow: false,
-                    slideShadows: false
-                },
-                loop: true
-            });
-            const navButtons = document.querySelectorAll(".portfolio__nav-btn");
-            let lenisHandled = false;
-            let lastScrollY = window.scrollY;
-            const resetLenisFlagOnScroll = () => {
-                const currentScrollY = window.scrollY;
-                if (Math.abs(currentScrollY - lastScrollY) > 1) {
-                    lenisHandled = false;
-                    lastScrollY = currentScrollY;
-                    window.removeEventListener("scroll", resetLenisFlagOnScroll);
-                }
-            };
-            const stopLenisWithFlag = () => {
-                if (!lenisHandled) {
-                    lenis.stop();
-                    setTimeout((() => {
-                        lenis.start();
-                        lenisHandled = true;
-                        lastScrollY = window.scrollY;
-                        window.addEventListener("scroll", resetLenisFlagOnScroll);
-                    }), 10);
-                }
-            };
-            navButtons.forEach(((btn, index) => {
-                btn.addEventListener("click", (() => {
-                    portfolioSlider.slideToLoop(index);
-                    stopLenisWithFlag();
-                }));
-            }));
-            portfolioSlider.on("touchStart", (() => {
-                stopLenisWithFlag();
-            }));
-            portfolioSlider.on("touchEnd", (() => {
-                stopLenisWithFlag();
-            }));
-            portfolioSlider.on("slideChange", (() => {
-                const realIndex = portfolioSlider.realIndex;
-                navButtons.forEach(((btn, index) => {
-                    if (index === realIndex) btn.classList.add("_active"); else btn.classList.remove("_active");
-                }));
-            }));
-            navButtons[portfolioSlider.realIndex].classList.add("_active");
-        }
-        if (document.querySelector(".merch__slider")) {
-            const merchSlider = new Swiper(".merch__slider", {
-                modules: [ EffectCube ],
-                observer: true,
-                observeParents: true,
-                slidesPerView: 1,
-                spaceBetween: 0,
-                autoHeight: true,
-                speed: 500,
-                direction: "horizontal",
-                effect: "cube",
-                cubeEffect: {
-                    shadow: false,
-                    slideShadows: false
-                },
-                loop: true
-            });
-            const navButtons = document.querySelectorAll(".nav-merch__nav-btn");
-            let lenisHandled = false;
-            let lastScrollY = window.scrollY;
-            const resetLenisFlagOnScroll = () => {
-                const currentScrollY = window.scrollY;
-                if (Math.abs(currentScrollY - lastScrollY) > 1) {
-                    lenisHandled = false;
-                    lastScrollY = currentScrollY;
-                    window.removeEventListener("scroll", resetLenisFlagOnScroll);
-                }
-            };
-            const stopLenisWithFlag = () => {
-                if (!lenisHandled) {
-                    lenis.stop();
-                    setTimeout((() => {
-                        lenis.start();
-                        lenisHandled = true;
-                        lastScrollY = window.scrollY;
-                        window.addEventListener("scroll", resetLenisFlagOnScroll);
-                    }), 10);
-                }
-            };
-            navButtons.forEach(((btn, index) => {
-                btn.addEventListener("click", (() => {
-                    merchSlider.slideToLoop(index);
-                    stopLenisWithFlag();
-                }));
-            }));
-            merchSlider.on("touchStart", (() => {
-                stopLenisWithFlag();
-            }));
-            merchSlider.on("touchEnd", (() => {
-                stopLenisWithFlag();
-            }));
-            merchSlider.on("slideChange", (() => {
-                const realIndex = merchSlider.realIndex;
-                navButtons.forEach(((btn, index) => {
-                    if (index === realIndex) btn.classList.add("_active"); else btn.classList.remove("_active");
-                }));
-            }));
-            navButtons[merchSlider.realIndex].classList.add("_active");
-        }
-        if (document.querySelector(".sliders-partners__slider")) {
-            new Swiper(".sliders-partners__slider", {
-                modules: [ EffectCoverflow, Autoplay ],
-                observer: true,
-                observeParents: true,
-                slidesPerView: 5,
-                spaceBetween: 0,
-                autoHeight: true,
-                speed: 800,
-                grabCursor: true,
-                centeredSlides: true,
-                autoHeight: true,
-                autoplay: {
-                    crossFade: true,
-                    delay: 1e3
-                },
-                direction: "vertical",
-                effect: "coverflow",
-                coverflowEffect: {
-                    depth: 150,
-                    modifier: 2,
-                    rotate: 0,
-                    scale: .9,
-                    slideShadows: false,
-                    stretch: 0
-                },
-                loop: true,
-                on: {
-                    touchStart: () => {
-                        stopLenisWithFlag();
-                    },
-                    touchEnd: () => {
-                        stopLenisWithFlag();
-                    }
-                }
-            });
-            let lenisHandled = false;
-            let lastScrollY = window.scrollY;
-            const resetLenisFlagOnScroll = () => {
-                const currentScrollY = window.scrollY;
-                if (Math.abs(currentScrollY - lastScrollY) > 1) {
-                    lenisHandled = false;
-                    lastScrollY = currentScrollY;
-                    window.removeEventListener("scroll", resetLenisFlagOnScroll);
-                }
-            };
-            const stopLenisWithFlag = () => {
-                if (!lenisHandled) {
-                    lenis.stop();
-                    setTimeout((() => {
-                        lenis.start();
-                        lenisHandled = true;
-                        lastScrollY = window.scrollY;
-                        window.addEventListener("scroll", resetLenisFlagOnScroll);
-                    }), 10);
-                }
-            };
-        }
-        const modal = document.querySelector(".modal-video");
-        const modalEl = document.querySelector(".modal-video__el");
-        const modalContent = document.querySelector(".modal-video__content");
-        const modalWrapper = document.querySelector(".modal-video__wrapper");
-        const modalCloseButton = document.querySelector("[data-modal-close]");
-        const videoElements = document.querySelectorAll("[data-video]");
-        if (videoElements.length > 0) {
-            videoElements.forEach((button => {
-                button.addEventListener("click", (() => {
-                    const videoSrc = button.getAttribute("data-video-src");
-                    const videoElement = document.createElement("video");
-                    videoElement.className = "video-el";
-                    videoElement.autoplay = true;
-                    videoElement.controls = true;
-                    videoElement.muted = false;
-                    videoElement.playsInline = true;
-                    videoElement.innerHTML = `<source src="${videoSrc}" type="video/mp4">`;
-                    modalEl.innerHTML = "";
-                    modalEl.appendChild(videoElement);
-                    modal.classList.add("_active");
-                    document.documentElement.classList.add("lock");
-                    document.documentElement.classList.add("video-modal");
-                }));
-            }));
-            modalCloseButton.addEventListener("click", (() => {
-                modal.classList.remove("_active");
-                document.documentElement.classList.remove("lock");
-                document.documentElement.classList.remove("video-modal");
-                const video = modalEl.querySelector("video");
-                if (video) video.pause();
-                setTimeout((() => {
-                    if (video) video.currentTime = 0;
-                    modalEl.innerHTML = "";
-                }), 800);
-            }));
-            let activeButton = null;
-            videoElements.forEach((button => {
-                button.addEventListener("click", (() => {
-                    const rect = button.getBoundingClientRect();
-                    const initialWidth = rect.width;
-                    const initialHeight = rect.height;
-                    const initialTop = rect.top - 10;
-                    const initialLeft = rect.left - 10;
-                    button.dataset.initialWidth = initialWidth;
-                    button.dataset.initialHeight = initialHeight;
-                    button.dataset.initialTop = initialTop;
-                    button.dataset.initialLeft = initialLeft;
-                    activeButton = button;
-                    modalContent.style.width = `${initialWidth}px`;
-                    modalContent.style.height = `${initialHeight}px`;
-                    modalContent.style.top = `${initialTop}px`;
-                    modalContent.style.left = `${initialLeft}px`;
-                    setTimeout((() => {
-                        const wrapperRect = modalWrapper.getBoundingClientRect();
-                        const finalWidth = wrapperRect.width;
-                        const finalHeight = finalWidth * (9 / 16);
-                        const viewportHeight = window.innerHeight;
-                        const calculatedTop = (viewportHeight - finalHeight) / 2;
-                        let finalTop;
-                        if (finalHeight < viewportHeight) finalTop = calculatedTop; else finalTop = wrapperRect.top - 10;
-                        const finalLeft = wrapperRect.left - 10;
-                        modalContent.style.width = `100%`;
-                        modalContent.style.height = "auto";
-                        modalContent.style.top = `${finalTop}px`;
-                        modalContent.style.left = `${finalLeft}px`;
-                    }), 200);
-                }));
-            }));
-            modalCloseButton.addEventListener("click", (() => {
-                if (!activeButton) return;
-                const rect = activeButton.getBoundingClientRect();
-                const initialWidth = rect.width;
-                const initialTop = rect.top - 10;
-                const initialLeft = rect.left - 10;
-                modalContent.style.width = `${initialWidth}px`;
-                modalContent.style.top = `${initialTop}px`;
-                modalContent.style.left = `${initialLeft}px`;
-                activeButton = null;
-                setTimeout((() => {
-                    modalContent.style.removeProperty("width");
-                    modalContent.style.removeProperty("height");
-                    modalContent.style.removeProperty("top");
-                    modalContent.style.removeProperty("left");
-                }), 900);
-            }));
-        }
-        const videoHead = document.querySelector(".head-deck__3d");
-        if (videoHead) {
-            const observerOptions = {
-                root: null,
-                threshold: [ .8, 1 ]
-            };
-            const observer = new IntersectionObserver((entries => {
-                entries.forEach((entry => {
-                    if (entry.intersectionRatio >= .5) {
-                        if (videoHead.paused) {
-                            videoHead.currentTime = 0;
-                            videoHead.play();
-                        }
-                    } else if (entry.intersectionRatio === 0) {
-                        videoHead.pause();
-                        videoHead.currentTime = 0;
-                    }
-                }));
-            }), observerOptions);
-            observer.observe(videoHead);
-            let isEnded = false;
-            videoHead.addEventListener("ended", (() => {
-                isEnded = true;
-            }));
-            videoHead.addEventListener("mouseover", (() => {
-                if (isEnded) {
-                    videoHead.currentTime = 0;
-                    videoHead.play();
-                    isEnded = false;
-                }
-            }));
-        }
-        function updateHeroHeight() {
-            const panda = document.querySelector(".hero__panda");
-            const hero = document.querySelector(".hero");
-            if (panda && hero) {
-                const pandaHeight = panda.offsetHeight;
-                hero.style.setProperty("--img-height", `${pandaHeight}px`);
-            }
-        }
-        updateHeroHeight();
         const splitTextLines = document.querySelectorAll(".split-lines");
         const splitTextWords = document.querySelectorAll(".split-words");
         const splitTextChars = document.querySelectorAll(".split-chars");
@@ -5451,25 +5066,19 @@
             }));
         }
         initSplitType();
-        ScrollTrigger.refresh();
-        let lastWidth = window.innerWidth;
-        window.addEventListener("resize", (() => {
-            const currentWidth = window.innerWidth;
-            if (currentWidth !== lastWidth) {
-                setTimeout((() => {
-                    location.reload();
-                }), 0);
-                updateHeroHeight();
-                initSplitType();
-                createAnimation();
-                ScrollTrigger.refresh();
-                lastWidth = currentWidth;
+        function updateHeroHeight() {
+            const panda = document.querySelector(".hero__panda");
+            const hero = document.querySelector(".hero");
+            if (panda && hero) {
+                const pandaHeight = panda.offsetHeight;
+                hero.style.setProperty("--img-height", `${pandaHeight}px`);
             }
-        }));
-        document.querySelector(".header__logo");
-        document.querySelector(".logo__ic");
+        }
+        updateHeroHeight();
+        ScrollTrigger.refresh();
+        const scrollBtn = document.querySelector(".scroll-btn");
+        const arrowDwn = document.querySelector(".arrow-dwn");
         const heroSection = document.querySelector(".hero");
-        document.querySelector(".hero__second");
         const heroRight = document.querySelector(".hero__right");
         const decorLinesClip = document.querySelector(".lines");
         const heroTitle = document.querySelector(".title-hero");
@@ -5490,19 +5099,13 @@
         const advisers = document.querySelector(".advisers");
         const advisersBlock = document.querySelector(".advisers__block");
         const advisersListItems = document.querySelectorAll(".list-advisers__item");
-        document.querySelector(".portf-deck");
-        document.querySelector(".portf-deck__body");
         const portfolioSection = document.querySelector(".portfolio");
         const portfolioContainer = document.querySelector(".portfolio__container");
-        document.querySelector(".portfolio__body");
         const deckSection = document.querySelector(".deck");
         const deckContainer = document.querySelector(".deck__container");
         const deckTop = document.querySelector(".deck__top");
         const deckBtm = document.querySelector(".deck__btm");
         const deckListItemSmm = document.querySelector(".list-deck__item.item-smm");
-        document.querySelector(".list-deck__item.item-3d");
-        document.querySelector(".men-deck__item");
-        document.querySelector(".men-deck__model");
         const merchSection = document.querySelector(".merch");
         const merchContainer = document.querySelector(".merch__container");
         const footer = document.querySelector(".footer");
@@ -5528,14 +5131,14 @@
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: heroSection,
-                        start: "top top",
+                        start: "0 0",
                         end: "+=2000",
                         scrub: 1
                     }
                 });
                 tl.to(heroTitleAline, {
-                    y: "-100%",
-                    x: "-100%",
+                    yPercent: -100,
+                    xPercent: -100,
                     stagger: .02,
                     ease: "power2.out"
                 }), tl.to(heroTitleA, {
@@ -5563,11 +5166,11 @@
             if (heroRight) {
                 gsap.to(heroRight, {
                     opacity: 0,
-                    x: "20%",
-                    y: "-20%",
+                    xPercent: 20,
+                    yPercent: -20,
                     scrollTrigger: {
                         trigger: heroSection,
-                        start: "top top",
+                        start: "0 0",
                         end: "+=1000",
                         scrub: 1.2
                     }
@@ -5575,7 +5178,7 @@
                 const tl4 = gsap.timeline({
                     scrollTrigger: {
                         trigger: heroSection,
-                        start: "top top",
+                        start: "0 0",
                         end: "bottom top",
                         scrub: 1
                     }
@@ -5718,7 +5321,7 @@
             }
             if (deckSection) {
                 gsap.to(deckBtm, {
-                    left: 0,
+                    x: 0,
                     opacity: 1,
                     scrollTrigger: {
                         trigger: deckBtm,
@@ -5738,7 +5341,7 @@
                     }
                 });
                 gsap.to(deckContainer, {
-                    left: "-50%",
+                    xPercent: -50,
                     ease: "none",
                     scrollTrigger: {
                         trigger: merchSection,
@@ -5759,28 +5362,37 @@
                     scrub: true
                 }
             });
-            gsap.set([ navTitle, navFirstItem, partnersContainer ], {
+            gsap.set([ arrowDwn, scrollBtn, navTitle, navFirstItem, partnersContainer, portfolioContainer, deckTop, footer, footerBody, payment, paymentContainer, paymentItems, paymentLine, contactsContainer, getContactsTxts, getContactsCubs, getContactsImg ], {
                 clearProps: "all"
             });
+            if (scrollBtn) scrollBtn.classList.remove("active", "step-1", "step-2", "step-3", "step-4", "step-5", "step-6", "step-7", "step-8", "step-9");
             let mm = gsap.matchMedia();
             mm.add({
                 portrait: "(orientation: portrait)",
-                landscape: "(orientation: landscape)",
-                landscapeMax1366: `(max-width: 85.436em) and (orientation: landscape)`,
-                maxWidth488: "(max-width: 30.061em)"
+                landscape: "(orientation: landscape)"
             }, (context => {
-                let {portrait, landscape, landscapeMax1366, maxWidth488} = context.conditions;
+                let {portrait, landscape} = context.conditions;
                 if (landscape) {
+                    const arrowDwn = document.querySelector(".arrow-dwn");
+                    if (arrowDwn) gsap.to(arrowDwn, {
+                        opacity: 0,
+                        scrollTrigger: {
+                            trigger: heroSection,
+                            start: "0 0",
+                            end: "bottom center",
+                            scrub: 1
+                        }
+                    });
                     const scrollBtn = document.querySelector(".scroll-btn");
-                    gsap.to(scrollBtn, {
+                    if (scrollBtn) gsap.to(scrollBtn, {
                         keyframes: [ {
-                            left: "45%",
+                            left: "45vw",
                             y: 0,
                             rotation: 0,
                             duration: 2.1
                         }, {
-                            left: "0%",
-                            top: "50%",
+                            left: "2vw",
+                            top: "10vw",
                             duration: 1.2
                         }, {
                             left: "35%",
@@ -5872,6 +5484,8 @@
                             scrub: 1
                         }
                     });
+                    const navFirstItem = document.querySelectorAll(".nav-first__item");
+                    const navTitle = document.querySelectorAll(".nav-first__title span");
                     if (navFirstItem) {
                         gsap.to(navTitle, {
                             y: 0,
@@ -5938,6 +5552,7 @@
                             top: 0
                         }, "<");
                     }
+                    const portfolioContainer = document.querySelector(".portfolio__container");
                     if (portfolioSection) gsap.timeline({
                         scrollTrigger: {
                             trigger: portfolioSection,
@@ -5963,6 +5578,7 @@
                             duration: 2
                         } ]
                     });
+                    const deckTop = document.querySelector(".deck__top");
                     if (deckSection) gsap.timeline({
                         scrollTrigger: {
                             trigger: deckSection,
@@ -5999,9 +5615,19 @@
                             scrub: true
                         }
                     });
+                    const footer = document.querySelector(".footer");
+                    const footerBody = document.querySelector(".footer__body");
+                    const payment = document.querySelector(".payment");
+                    const paymentContainer = document.querySelector(".payment__container");
+                    const paymentItems = document.querySelectorAll(".payment__item");
+                    const paymentLine = document.querySelectorAll(".payment__line");
+                    const contactsContainer = document.querySelector(".contacts__container");
+                    const getContactsImg = document.querySelector(".get-contacts__img");
+                    const getContactsCubs = document.querySelector(".get-contacts__cubes");
+                    const getContactsTxts = document.querySelector(".get-contacts__txts");
                     if (footer) {
                         gsap.to(payment, {
-                            left: "0%",
+                            x: 50,
                             duration: .5,
                             ease: "none",
                             scrollTrigger: {
@@ -6075,20 +5701,20 @@
                                 scrub: true
                             }
                         }).to(getContactsTxts, {
-                            transform: "translateY(0%)",
+                            y: 0,
                             duration: .5,
                             ease: "none"
                         }).to(getContactsCubs, {
-                            transform: "translateY(0%)",
+                            y: 0,
                             duration: .5,
                             ease: "none"
                         }, "<").to(getContactsImg, {
-                            transform: "translateY(0%)",
+                            y: 0,
                             duration: .5,
                             ease: "none"
                         }, "<");
                         gsap.to(footerBody, {
-                            left: "-50%",
+                            xPercent: -50,
                             duration: .5,
                             ease: "none",
                             scrollTrigger: {
@@ -6155,6 +5781,7 @@
                             top: 0
                         }, "<");
                     }
+                    const portfolioContainer = document.querySelector(".portfolio__container");
                     if (portfolioSection) {
                         gsap.set(portfolioContainer, {
                             x: "50%"
@@ -6171,8 +5798,9 @@
                             ease: "none"
                         });
                     }
+                    const deckTop = document.querySelector(".deck__top");
                     if (deckSection) gsap.to(deckTop, {
-                        left: "0%",
+                        x: 0,
                         scrollTrigger: {
                             trigger: deckTop,
                             start: "top bottom",
@@ -6184,6 +5812,396 @@
             }));
         }
         createAnimation();
+        const eyeballs = document.querySelectorAll(".eyeball");
+        if (eyeballs.length > 0) {
+            const squares = document.querySelectorAll(".square");
+            const eyeConfig = {
+                irisRadius: 36,
+                pupilRadius: 16
+            };
+            const getEyeCenter = eyeball => {
+                const rect = eyeball.getBoundingClientRect();
+                return {
+                    centerX: rect.left + rect.width / 2,
+                    centerY: rect.top + rect.height / 2,
+                    radius: eyeConfig.irisRadius - eyeConfig.pupilRadius
+                };
+            };
+            const constrain = (x, y, radius) => {
+                const distance = Math.sqrt(x * x + y * y);
+                if (distance > radius) {
+                    const angle = Math.atan2(y, x);
+                    return {
+                        x: Math.cos(angle) * radius,
+                        y: Math.sin(angle) * radius
+                    };
+                }
+                return {
+                    x,
+                    y
+                };
+            };
+            document.addEventListener("mousemove", (event => {
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+                eyeballs.forEach(((eyeball, index) => {
+                    const square = squares[index];
+                    const {centerX, centerY, radius} = getEyeCenter(eyeball);
+                    const dx = mouseX - centerX;
+                    const dy = mouseY - centerY;
+                    const {x, y} = constrain(dx, dy, radius);
+                    square.style.transform = `translate(${x}px, ${y}px)`;
+                }));
+            }));
+        }
+        const canvas = document.getElementById("canvasModel");
+        if (canvas) {
+            const canvasHoverEl = document.querySelector(".men-deck__hover-el");
+            const speed = 40;
+            const ctx = canvas.getContext("2d");
+            let marioTimer = null;
+            const mario = {
+                img: new Image,
+                x: 0,
+                y: 0,
+                width: 593,
+                height: 850,
+                currentframe: 0,
+                totalframes: 65
+            };
+            mario.img.src = "files/left-min.png";
+            function resetMario() {
+                clearInterval(marioTimer);
+                marioTimer = null;
+                mario.currentframe = 0;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(mario.img, mario.currentframe * mario.width, 0, mario.width, mario.height, 0, 0, mario.width, mario.height);
+            }
+            mario.img.onload = resetMario;
+            function animateMario() {
+                mario.currentframe++;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(mario.img, mario.currentframe * mario.width, 0, mario.width, mario.height, 0, 0, mario.width, mario.height);
+                if (mario.currentframe >= mario.totalframes - 1) {
+                    clearInterval(marioTimer);
+                    mario.currentframe = mario.totalframes - 1;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(mario.img, mario.currentframe * mario.width, 0, mario.width, mario.height, 0, 0, mario.width, mario.height);
+                }
+            }
+            const observer = new IntersectionObserver((entries => {
+                entries.forEach((entry => {
+                    if (entry.isIntersecting) if (isMobile.any()) {
+                        if (!marioTimer) marioTimer = setInterval(animateMario, speed);
+                    } else canvasHoverEl.addEventListener("mouseenter", startAnimation); else resetMario();
+                }));
+            }), {
+                threshold: .1
+            });
+            function startAnimation() {
+                if (!marioTimer) marioTimer = setInterval(animateMario, speed);
+            }
+            observer.observe(canvas);
+        }
+        if (document.querySelector(".portfolio__slider") || document.querySelector(".merch__slider") || document.querySelector(".sliders-partners-01") || document.querySelector(".sliders-partners-02") || document.querySelector(".sliders-partners-03")) {
+            const initializeSlider = ({selector, config, navSelector}) => {
+                const sliderElement = document.querySelector(selector);
+                if (!sliderElement) return;
+                const slider = new Swiper(sliderElement, config);
+                const navButtons = navSelector ? document.querySelectorAll(navSelector) : [];
+                let lenisHandled = false;
+                let lastScrollY = window.scrollY;
+                const resetLenisFlagOnScroll = () => {
+                    const currentScrollY = window.scrollY;
+                    if (Math.abs(currentScrollY - lastScrollY) > 1) {
+                        lenisHandled = false;
+                        lastScrollY = currentScrollY;
+                        window.removeEventListener("scroll", resetLenisFlagOnScroll);
+                    }
+                };
+                const stopLenisWithFlag = () => {
+                    if (!lenisHandled) {
+                        lenis.stop();
+                        setTimeout((() => {
+                            lenis.start();
+                            lenisHandled = true;
+                            lastScrollY = window.scrollY;
+                            window.addEventListener("scroll", resetLenisFlagOnScroll);
+                        }), 10);
+                    }
+                };
+                if (navButtons.length) {
+                    navButtons.forEach(((btn, index) => {
+                        btn.addEventListener("click", (() => {
+                            slider.slideToLoop(index);
+                            stopLenisWithFlag();
+                        }));
+                    }));
+                    slider.on("slideChange", (() => {
+                        const realIndex = slider.realIndex;
+                        navButtons.forEach(((btn, index) => {
+                            btn.classList.toggle("_active", index === realIndex);
+                        }));
+                    }));
+                    navButtons[slider.realIndex]?.classList.add("_active");
+                }
+                slider.on("touchStart", stopLenisWithFlag);
+                slider.on("touchEnd", stopLenisWithFlag);
+                return slider;
+            };
+            const slidersConfig = [ {
+                selector: ".portfolio__slider",
+                config: {
+                    modules: [ EffectCube ],
+                    observer: true,
+                    observeParents: true,
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    autoHeight: true,
+                    speed: 500,
+                    direction: "vertical",
+                    effect: "cube",
+                    cubeEffect: {
+                        shadow: false,
+                        slideShadows: false
+                    },
+                    loop: true
+                },
+                navSelector: ".portfolio__nav-btn"
+            }, {
+                selector: ".merch__slider",
+                config: {
+                    modules: [ EffectCube ],
+                    observer: true,
+                    observeParents: true,
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    autoHeight: true,
+                    speed: 500,
+                    direction: "horizontal",
+                    effect: "cube",
+                    cubeEffect: {
+                        shadow: false,
+                        slideShadows: false
+                    },
+                    loop: true
+                },
+                navSelector: ".nav-merch__nav-btn"
+            }, {
+                selector: ".sliders-partners-01",
+                config: {
+                    modules: [ EffectCoverflow, Autoplay ],
+                    observer: true,
+                    observeParents: true,
+                    slidesPerView: 5,
+                    spaceBetween: 0,
+                    autoHeight: true,
+                    speed: 800,
+                    grabCursor: true,
+                    centeredSlides: true,
+                    autoplay: {
+                        crossFade: true,
+                        delay: 1e3
+                    },
+                    direction: "vertical",
+                    effect: "coverflow",
+                    coverflowEffect: {
+                        depth: 150,
+                        modifier: 2,
+                        rotate: 0,
+                        scale: .9,
+                        slideShadows: false
+                    },
+                    loop: true
+                }
+            }, {
+                selector: ".sliders-partners-02",
+                config: {
+                    modules: [ EffectCoverflow, Autoplay ],
+                    observer: true,
+                    observeParents: true,
+                    slidesPerView: 5,
+                    spaceBetween: 0,
+                    autoHeight: true,
+                    speed: 800,
+                    grabCursor: true,
+                    centeredSlides: true,
+                    autoplay: {
+                        crossFade: true,
+                        delay: 1e3
+                    },
+                    direction: "vertical",
+                    effect: "coverflow",
+                    coverflowEffect: {
+                        depth: 150,
+                        modifier: 2,
+                        rotate: 0,
+                        scale: .9,
+                        slideShadows: false
+                    },
+                    loop: true
+                }
+            }, {
+                selector: ".sliders-partners-03",
+                config: {
+                    modules: [ EffectCoverflow, Autoplay ],
+                    observer: true,
+                    observeParents: true,
+                    slidesPerView: 5,
+                    spaceBetween: 0,
+                    autoHeight: true,
+                    speed: 800,
+                    grabCursor: true,
+                    centeredSlides: true,
+                    autoplay: {
+                        crossFade: true,
+                        delay: 1e3
+                    },
+                    direction: "vertical",
+                    effect: "coverflow",
+                    coverflowEffect: {
+                        depth: 150,
+                        modifier: 2,
+                        rotate: 0,
+                        scale: .9,
+                        slideShadows: false
+                    },
+                    loop: true
+                }
+            } ];
+            slidersConfig.forEach((config => initializeSlider(config)));
+        }
+        const modal = document.querySelector(".modal-video");
+        const modalEl = document.querySelector(".modal-video__el");
+        const modalContent = document.querySelector(".modal-video__content");
+        const modalWrapper = document.querySelector(".modal-video__wrapper");
+        const modalCloseButton = document.querySelector("[data-modal-close]");
+        const videoElements = document.querySelectorAll("[data-video]");
+        if (videoElements.length > 0) {
+            videoElements.forEach((button => {
+                button.addEventListener("click", (() => {
+                    const videoSrc = button.getAttribute("data-video-src");
+                    const videoElement = document.createElement("video");
+                    videoElement.className = "video-el";
+                    videoElement.autoplay = true;
+                    videoElement.controls = true;
+                    videoElement.muted = false;
+                    videoElement.playsInline = true;
+                    videoElement.innerHTML = `<source src="${videoSrc}" type="video/mp4">`;
+                    modalEl.innerHTML = "";
+                    modalEl.appendChild(videoElement);
+                    modal.classList.add("_active");
+                    document.documentElement.classList.add("lock");
+                    document.documentElement.classList.add("video-modal");
+                }));
+            }));
+            modalCloseButton.addEventListener("click", (() => {
+                modal.classList.remove("_active");
+                document.documentElement.classList.remove("lock");
+                document.documentElement.classList.remove("video-modal");
+                const video = modalEl.querySelector("video");
+                if (video) video.pause();
+                setTimeout((() => {
+                    if (video) video.currentTime = 0;
+                    modalEl.innerHTML = "";
+                }), 800);
+            }));
+            let activeButton = null;
+            videoElements.forEach((button => {
+                button.addEventListener("click", (() => {
+                    const rect = button.getBoundingClientRect();
+                    const initialWidth = rect.width;
+                    const initialHeight = rect.height;
+                    const initialTop = rect.top - 10;
+                    const initialLeft = rect.left - 10;
+                    button.dataset.initialWidth = initialWidth;
+                    button.dataset.initialHeight = initialHeight;
+                    button.dataset.initialTop = initialTop;
+                    button.dataset.initialLeft = initialLeft;
+                    activeButton = button;
+                    modalContent.style.width = `${initialWidth}px`;
+                    modalContent.style.height = `${initialHeight}px`;
+                    modalContent.style.top = `${initialTop}px`;
+                    modalContent.style.left = `${initialLeft}px`;
+                    setTimeout((() => {
+                        const wrapperRect = modalWrapper.getBoundingClientRect();
+                        const finalWidth = wrapperRect.width;
+                        const finalHeight = finalWidth * (9 / 16);
+                        const viewportHeight = window.innerHeight;
+                        const calculatedTop = (viewportHeight - finalHeight) / 2;
+                        let finalTop;
+                        if (finalHeight < viewportHeight) finalTop = calculatedTop; else finalTop = wrapperRect.top - 10;
+                        const finalLeft = wrapperRect.left - 10;
+                        modalContent.style.width = `100%`;
+                        modalContent.style.height = "auto";
+                        modalContent.style.top = `${finalTop}px`;
+                        modalContent.style.left = `${finalLeft}px`;
+                    }), 200);
+                }));
+            }));
+            modalCloseButton.addEventListener("click", (() => {
+                if (!activeButton) return;
+                const rect = activeButton.getBoundingClientRect();
+                const initialWidth = rect.width;
+                const initialTop = rect.top - 10;
+                const initialLeft = rect.left - 10;
+                modalContent.style.width = `${initialWidth}px`;
+                modalContent.style.top = `${initialTop}px`;
+                modalContent.style.left = `${initialLeft}px`;
+                activeButton = null;
+                setTimeout((() => {
+                    modalContent.style.removeProperty("width");
+                    modalContent.style.removeProperty("height");
+                    modalContent.style.removeProperty("top");
+                    modalContent.style.removeProperty("left");
+                }), 900);
+            }));
+        }
+        const videoHead = document.querySelector(".head-deck__3d");
+        if (videoHead) {
+            const observerOptions = {
+                root: null,
+                threshold: [ .8, 1 ]
+            };
+            const observer = new IntersectionObserver((entries => {
+                entries.forEach((entry => {
+                    if (entry.intersectionRatio >= .5) {
+                        if (videoHead.paused) {
+                            videoHead.currentTime = 0;
+                            videoHead.play();
+                        }
+                    } else if (entry.intersectionRatio === 0) {
+                        videoHead.pause();
+                        videoHead.currentTime = 0;
+                    }
+                }));
+            }), observerOptions);
+            observer.observe(videoHead);
+            let isEnded = false;
+            videoHead.addEventListener("ended", (() => {
+                isEnded = true;
+            }));
+            videoHead.addEventListener("mouseover", (() => {
+                if (isEnded) {
+                    videoHead.currentTime = 0;
+                    videoHead.play();
+                    isEnded = false;
+                }
+            }));
+        }
+        let lastWidth = window.innerWidth;
+        window.addEventListener("resize", (() => {
+            const currentWidth = window.innerWidth;
+            if (currentWidth !== lastWidth) {
+                updateHeroHeight();
+                initSplitType();
+                setTimeout((() => {
+                    createAnimation();
+                }), 300);
+                ScrollTrigger.refresh();
+                lastWidth = currentWidth;
+            }
+        }));
     }));
     const scrollBtn = document.querySelector(".scroll-btn");
     let lastScrollTop = 0;
