@@ -6189,6 +6189,41 @@
                 }
             }));
         }
+        const logo = document.querySelector(".logo");
+        if (logo) {
+            logo.addEventListener("mouseenter", (() => {
+                logo.classList.add("_hover");
+                logo.classList.remove("_not-hover");
+            }));
+            logo.addEventListener("mouseleave", (() => {
+                logo.classList.remove("_hover");
+                logo.classList.add("_not-hover");
+                setTimeout((() => {
+                    logo.classList.remove("_not-hover");
+                }), 600);
+            }));
+        }
+        const lngElement = document.querySelector(".lng");
+        const lngButton = lngElement.querySelector(".lng__current");
+        if (lngElement) if (isMobile.any()) {
+            lngButton.addEventListener("click", (event => {
+                event.stopPropagation();
+                lngElement.classList.toggle("_active");
+            }));
+            document.addEventListener("click", (event => {
+                if (!lngElement.contains(event.target)) lngElement.classList.remove("_active");
+            }));
+        } else {
+            lngElement.addEventListener("mouseenter", (() => {
+                lngElement.classList.add("_active");
+            }));
+            lngElement.addEventListener("mouseleave", (() => {
+                lngElement.classList.remove("_active");
+            }));
+            document.addEventListener("click", (event => {
+                if (!lngElement.contains(event.target)) lngElement.classList.remove("_active");
+            }));
+        }
         let lastWidth = window.innerWidth;
         window.addEventListener("resize", (() => {
             const currentWidth = window.innerWidth;
@@ -6204,22 +6239,31 @@
         }));
     }));
     const scrollBtn = document.querySelector(".scroll-btn");
-    let lastScrollTop = 0;
-    const delta = 20;
-    window.addEventListener("scroll", (() => {
-        const scrollTop = window.scrollY;
-        if (Math.abs(scrollTop - lastScrollTop) > delta) {
-            if (scrollTop > lastScrollTop) {
-                scrollBtn.classList.add("_move-dwn");
-                scrollBtn.classList.remove("_move-up");
-            } else if (scrollTop < lastScrollTop) {
-                scrollBtn.classList.add("_move-up");
-                scrollBtn.classList.remove("_move-dwn");
+    if (scrollBtn) {
+        let lastScrollTop = 0;
+        const delta = 20;
+        window.addEventListener("scroll", (() => {
+            const scrollTop = window.scrollY;
+            if (Math.abs(scrollTop - lastScrollTop) > delta) {
+                if (scrollTop > lastScrollTop) {
+                    scrollBtn.classList.add("_move-dwn");
+                    scrollBtn.classList.remove("_move-up");
+                } else if (scrollTop < lastScrollTop) {
+                    scrollBtn.classList.add("_move-up");
+                    scrollBtn.classList.remove("_move-dwn");
+                }
+                lastScrollTop = scrollTop;
             }
-            lastScrollTop = scrollTop;
-        }
+        }));
+        scrollBtn.addEventListener("click", (() => {
+            scrollToTop();
+        }));
+    }
+    const logo = document.querySelector(".logo");
+    if (logo) logo.addEventListener("click", (() => {
+        scrollToTop();
     }));
-    scrollBtn.addEventListener("click", (() => {
+    function scrollToTop() {
         lenis.stop();
         window.scrollTo({
             top: 0
@@ -6227,7 +6271,7 @@
         setTimeout((() => {
             lenis.start();
         }), 500);
-    }));
+    }
     window["FLS"] = false;
     addLoadedClass();
     menuInit();
